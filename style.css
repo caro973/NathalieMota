@@ -167,6 +167,13 @@ h1, h2, h3 {
     font-family: 'Poppins', monospace;
     font-weight: 700;
 }
+
+*{
+    margin: 0 auto;
+}
+
+/*MENU NAVIGATION*/
+
 .menu-navigation{
     display: flex;
     justify-content: space-between;
@@ -175,9 +182,15 @@ h1, h2, h3 {
 .menu-navigation img{
     width: 216px;
     height: 14px;
-    margin-left: 146px;
-    margin-top: 31px;
+    margin-top: 15%;
+    left: 146px;
 }
+
+.menu-navigation .logo{
+    margin-left:9%;
+
+}
+
 
 .menu-navigation .menu-liste{
     display: flex;
@@ -185,9 +198,9 @@ h1, h2, h3 {
     padding: 0;
     gap: 30px;
     font-family: 'SpaceMono';
-    font: 400;
     font-size: 16px;
-    margin-top: 31px;
+    margin-top: 2%;
+    margin-bottom: 2%;
     margin-right:10%;
 }
 
@@ -195,4 +208,17 @@ h1, h2, h3 {
     color:black;
     text-decoration: none;
 }
+body > img{
+    width:100%;
+}
 
+/*NAVIGATION FOOTER*/
+
+#menu-footer-menu{
+    display: flex;
+    list-style: none;
+}
+#menu-footer-menu a{
+    color: black;
+    text-decoration: none;
+}

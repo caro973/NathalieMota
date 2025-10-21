@@ -7,7 +7,7 @@
     <?php wp_head() ?>
 </head>
 <body>
-   <nav class="menu-navigation">
+    <nav class="menu-navigation">
     <div class="logo">
          
         <a href="<?php echo esc_url(home_url('/')); ?>"><img class="header__heading" src="<?php echo get_template_directory_uri(); ?>/assets/images/Logo.png" alt="Logo Nathalie Mota" /></a>
@@ -20,7 +20,9 @@
         'fallback_cb'    => false,            // Pas de menu de secours
     ));
     ?>
+    </nav>
+<img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" /></a>
+    </div>
 
-</nav>
 </body>
 </html>
