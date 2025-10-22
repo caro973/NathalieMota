@@ -20,6 +20,7 @@
         'fallback_cb'    => false,            // Pas de menu de secours
     ));
     ?>
+   
     </nav>
 <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" /></a>
     </div>

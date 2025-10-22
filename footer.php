@@ -1,4 +1,4 @@
-<?php get_template_part('template_part/modale.php');?>
+<?php get_template_part('template-part/modal-contact');?>
 <footer class="footer">
    <nav class="footer__nav">
     <?php

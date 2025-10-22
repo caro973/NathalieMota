@@ -17,3 +17,16 @@ function mon_theme_setup() {
     ));
 }
 add_action('after_setup_theme', 'mon_theme_setup');
+
+function mon_theme_scripts() {
+    wp_enqueue_script(
+        'mon-theme-scripts', // Identifiant unique
+        get_template_directory_uri() . '/js/script.js', // Chemin corrigé
+        array(), // Dépendances (laissez vide si aucune)
+        '1.0.0', // Version
+        true // Charger dans le footer
+    );
+}
+add_action('wp_enqueue_scripts', 'mon_theme_scripts');
+
+

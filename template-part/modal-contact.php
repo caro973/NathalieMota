@@ -1,0 +1,7 @@
+<div id="contact-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <img class="contact-header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Contact header.png" alt="image contact">
+        <?php echo do_shortcode('[contact-form-7 id="e1af9a0" title="Formulaire de contact 1"]'); ?>
+    </div>
+</div>
