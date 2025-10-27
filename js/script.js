@@ -1,9 +1,7 @@
-// /js/scripts.js
 document.addEventListener('DOMContentLoaded', function() {
+    const openModalBtn = document.querySelectorAll('.open-contact-modal');
     const modal = document.getElementById('contact-modal');
-    const openModalBtn = document.querySelectorAll('.open-contact-modal'); // Boutons pour ouvrir la modale
     const closeModalBtn = document.querySelector('.close-modal');
-    
 
     // Ouvrir la modale
     openModalBtn.forEach(btn => {
@@ -18,10 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.style.display = 'none';
     });
 
-    // Fermer la modale en cliquant en dehors
-    window.addEventListener('click', function(e) {
-        if (e.target === modal) {
+    // Fermer la modale en cliquant à l'extérieur
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
 });
+

@@ -239,20 +239,55 @@ body > img{
 
 /*FORMULAIRE CONTACT HEADER*/
 
-#contact-modal > div{
-    display: flex;
-    flex-direction: column;
-    width: 597px;
-    height: 769px;
+/* Modale */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-#contact-modal > div > img{
-    max-width: 100%;
+/* Contenu de la modale */
+.modal-content {
+    border-color: black;
+    border-width: 5px;
+    border-style: solid;
+    background: white;
+    margin: 2% auto;
+    padding: 0; 
+    width: 600px;
+    max-width: 90%;
+    position: relative;
+    overflow: hidden; 
+    
+}
+
+/* Conteneur du logo */
+.logo-container {
+    width: calc(100% + 40px); 
+    margin-left: -20px; 
+    overflow: hidden; 
+    margin-top: 15px;
+}
+
+/* Logo */
+.contact-header {
+    width: 100%;
     height: auto;
+    display: block; 
+}
+
+#wpcf7-f4-o1 > form{
+    display: flex;
+    flex-direction: column;
 }
 
 #wpcf7-f4-o1{
-    margin-top: 9%;
+   margin-top: 5%;
 }
 
 #wpcf7-f4-o1 label{
@@ -269,6 +304,7 @@ body > img{
     border-style: solid;
     border-width: 1px;
     margin-bottom: 30px;
+    
 }
 
 textarea{
@@ -276,14 +312,18 @@ textarea{
     border-radius: 7px;
     border-color: #B8BBC2;
 }
-#wpcf7-f4-o1 > form > p:nth-child(6) > input
-{ 
-    width: 263px;
+
+#wpcf7-f4-o1 > form > p:nth-child(6) > font > font > input{ 
+    display: flex;
     margin-top: 7%;
     border: none;
     border-radius: 2%;
     height: 50px;
     background-color: #D8D8D8;
+    width: 270px;
+    margin-top: 9%; 
+    font-family: "SpaceMono";
+    font-weight: 400;
 }
 
 .close-modal{
