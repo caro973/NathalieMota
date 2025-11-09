@@ -24,3 +24,111 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const categorieFilter = document.getElementById('categorie-filter');
+    const formatFilter = document.getElementById('format-filter');
+    const sortFilter = document.getElementById('sort-filter');
+    const loadMoreBtn = document.getElementById('load-more-posts');
+    const container = document.querySelector('.thumbnail-container-accueil');
+    const currentPageInput = document.getElementById('current-page');
+    const currentCategorieInput = document.getElementById('current-categorie');
+    const currentFormatInput = document.getElementById('current-format');
+    const currentSortInput = document.getElementById('current-sort');
+
+    // Fonction pour filtrer les photos
+    function filterPhotos() {
+        const categorie = categorieFilter.value;
+        const format = formatFilter.value;
+        const sort = sortFilter.value;
+
+        // Sauvegarder les filtres actuels
+        currentCategorieInput.value = categorie;
+        currentFormatInput.value = format;
+        currentSortInput.value = sort;
+        currentPageInput.value = '1';
+
+        fetch(ajaxurl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'filter_photos',
+                categorie: categorie,
+                format: format,
+                sort: sort,
+                page: 1
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                container.innerHTML = data.data.html;
+                
+                // Afficher/masquer le bouton "Charger plus"
+                if (data.data.max_pages > 1) {
+                    loadMoreBtn.style.display = 'block';
+                    loadMoreBtn.setAttribute('data-max-pages', data.data.max_pages);
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => console.error('Erreur:', error));
+    }
+
+    // Fonction pour charger plus de photos
+    function loadMorePhotos() {
+        const currentPage = parseInt(currentPageInput.value);
+        const nextPage = currentPage + 1;
+        const maxPages = parseInt(loadMoreBtn.getAttribute('data-max-pages'));
+        const categorie = currentCategorieInput.value;
+        const format = currentFormatInput.value;
+        const sort = currentSortInput.value;
+
+        // Désactiver le bouton pendant le chargement
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = 'Chargement...';
+
+        fetch(ajaxurl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'load_more_photos',
+                page: nextPage,
+                categorie: categorie,
+                format: format,
+                sort: sort
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.html) {
+                // Ajouter les nouvelles photos à la suite
+                container.insertAdjacentHTML('beforeend', data.data.html);
+                currentPageInput.value = nextPage;
+
+                // Masquer le bouton si on a atteint la dernière page
+                if (nextPage >= maxPages) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.textContent = 'Charger plus';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.textContent = 'Charger plus';
+        });
+    }
+
+    // Event listeners
+    if (categorieFilter) categorieFilter.addEventListener('change', filterPhotos);
+    if (formatFilter) formatFilter.addEventListener('change', filterPhotos);
+    if (sortFilter) sortFilter.addEventListener('change', filterPhotos);
+    if (loadMoreBtn) loadMoreBtn.addEventListener('click', loadMorePhotos);
+});
