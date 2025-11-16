@@ -132,3 +132,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sortFilter) sortFilter.addEventListener('change', filterPhotos);
     if (loadMoreBtn) loadMoreBtn.addEventListener('click', loadMorePhotos);
 });
+
+// Initialisation de Select2 pour chaque menu déroulant
+document.addEventListener('DOMContentLoaded', function() {
+    // Sélectionner tous les éléments avec la classe 'choices-custom'
+    const choicesElements = document.querySelectorAll('.choices-custom');
+
+    // Initialiser Choices.js sur chaque élément
+    choicesElements.forEach(function(choicesElement) {
+        new Choices(choicesElement, {
+            removeItemButton: false,
+            searchEnabled: false,
+            shouldSort: false,
+            placeholder: true,
+             placeholderValue: choicesElement.dataset.placeholder || '',
+            itemSelectText: ''
+        });
+    });
+});
+
+
+

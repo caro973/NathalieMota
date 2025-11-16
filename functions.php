@@ -21,7 +21,7 @@ add_action('after_setup_theme', 'mon_theme_setup');
 function mon_theme_scripts() {
     wp_enqueue_script(
         'mon-theme-scripts', // Identifiant unique
-        get_template_directory_uri() . '/js/script.js', 
+        get_template_directory_uri() . '/assets/js/script.js', 
         array(), // Dépendances (laissez vide si aucune)
         '1.0.0', // Version
         true // Charger dans le footer
@@ -210,3 +210,33 @@ function motaphoto_enqueue_fonts() {
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600&display=swap');
 }
 add_action('wp_enqueue_scripts', 'motaphoto_enqueue_fonts');
+
+function enqueue_choices_js() {
+    // Charger Choices CSS
+    wp_enqueue_style(
+        'choices-css',
+        'https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css',
+        array(),
+        '9.0.1'
+    );
+
+    // Charger Choices JS
+    wp_enqueue_script(
+        'choices-js',
+        'https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js',
+        array(),
+        '9.0.1',
+        true
+    );
+
+    // Charger votre script personnalisé (après Choices.js)
+    wp_enqueue_script(
+        'mon-script-choices',
+        get_template_directory_uri() . '/js/mon-script-choices.js',
+        array('choices-js'),
+        '1.0',
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_choices_js');
+

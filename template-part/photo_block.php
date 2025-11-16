@@ -1,56 +1,37 @@
-<!-- Hero Section pour mobile -->
-<div class="hero-section">
-    <?php 
-    // Vous pouvez mettre une image featured ou une image par défaut
-    $hero_image = get_template_directory_uri() . '/assets/images/hero-photo.jpg';
-    ?>
-    <img src="<?php echo esc_url($hero_image); ?>" alt="Photographie Événement">
-    <div class="hero-text">PHOTOGRAPHIE EVENT</div>
-</div>
-
 <!-- Section | Filtres -->
 <div class="photo-filters">
-    <div class="filters-container">
-        <!-- Filtre Catégories (WP Core) -->
-        <select name="categorie-filter" id="categorie-filter" class="filter-select">
-            <option value="">CATÉGORIES</option>
-            <?php
-            $categories = get_categories(array(
-                'hide_empty' => false,
-            ));
-            
-            if ($categories) {
-                foreach ($categories as $cat) {
-                    echo '<option value="' . esc_attr($cat->term_id) . '">' . esc_html($cat->name) . '</option>';
-                }
+    <!-- Filtre Catégories -->
+    <select name="categorie-filter" id="categorie-filter" class="choices-custom">
+        <option value="">CATÉGORIES</option>
+        <?php
+        $categories = get_categories(array('hide_empty' => false));
+        if ($categories) {
+            foreach ($categories as $cat) {
+                echo '<option value="' . esc_attr($cat->term_id) . '">' . esc_html($cat->name) . '</option>';
             }
-            ?>
-        </select>
+        }
+        ?>
+    </select>
 
-        <!-- Filtre Formats -->
-        <select name="format-filter" id="format-filter" class="filter-select">
-            <option value="">FORMATS</option>
-            <?php
-            $formats = get_terms(array(
-                'taxonomy' => 'format',
-                'hide_empty' => false,
-            ));
-            
-            if ($formats && !is_wp_error($formats)) {
-                foreach ($formats as $format) {
-                    echo '<option value="' . esc_attr($format->slug) . '">' . esc_html($format->name) . '</option>';
-                }
+    <!-- Filtre Formats -->
+    <select name="format-filter" id="format-filter" class="choices-custom">
+        <option value="">FORMATS</option>
+        <?php
+        $formats = get_terms(array('taxonomy' => 'format', 'hide_empty' => false));
+        if ($formats && !is_wp_error($formats)) {
+            foreach ($formats as $format) {
+                echo '<option value="' . esc_attr($format->slug) . '">' . esc_html($format->name) . '</option>';
             }
-            ?>
-        </select>
+        }
+        ?>
+    </select>
 
-        <!-- Filtre Tri -->
-        <select name="sort-filter" id="sort-filter" class="filter-select">
-            <option value="">TRIER PAR</option>
-            <option value="date_desc">Plus récentes</option>
-            <option value="date_asc">Plus anciennes</option>
-        </select>
-    </div>
+    <!-- Filtre Tri -->
+    <select name="sort-filter" id="sort-filter" class="choices-custom">
+        <option value="">TRIER PAR</option>
+        <option value="date_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'date_desc') ? 'selected' : ''; ?>>Plus récentes</option>
+        <option value="date_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'date_asc') ? 'selected' : ''; ?>>Plus anciennes</option>
+    </select>
 </div>
 
 <!-- Section | Miniatures Personnalisées -->
