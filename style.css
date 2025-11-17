@@ -358,7 +358,6 @@ textarea{
    FILTRES
 ======================================== */
 
-/* Style de base pour les selects */
 .photo-filters {
     display: flex;
     gap: 10px;
@@ -376,15 +375,20 @@ textarea{
 
 .choices {
     width: 200px;
-    max-width: 100%;
+    max-width: 250px;
 }
+
 .choices__inner {
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
     width: 100%;
-    min-width: 200px;
+    word-break: normal;
+}
+
+body > main > div.photo-filters > div.choices.is-focused.is-open > div.choices__list.choices__list--dropdown.is-active {
+    min-width: 214px;
 }
 
 .choices__list--dropdown {
@@ -392,8 +396,8 @@ textarea{
     flex-direction: column;
     flex-wrap: nowrap;
     width: 100%;
-    min-width: 200px;
-    max-height: 200px;
+    min-width: 214px;
+    max-height: 400px;
     overflow-y: auto;
     padding: 0;
     margin: 0;
@@ -408,29 +412,32 @@ textarea{
     display: block;
     width: 100%;
     padding: 8px 12px;
+    box-sizing: border-box; 
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.choices__item {
-    word-break: normal;
+#choices--categorie-filter-item-choice-1 {
+    padding: 0 5px 0 10px;
 }
 
 /* État par défaut */
 .choices__inner {
     background-color: #FFFFFF;
+    color: black;
 }
 
 /* État hover */
 .choices__list--dropdown .choices__item--selectable.is-highlighted {
     background-color: #FFD6D6;
+    color: black;
 }
 
 /* État focus */
 .choices.is-focused .choices__inner {
-    border-color: #E00000;
+    border-color: #215AFF;
 }
 
 /* État actif (pressed) */
@@ -441,7 +448,7 @@ textarea{
 /* État sélectionné */
 .choices__list--dropdown .choices__item--selectable.is-selected {
     background-color: #E00000;
-    color: white;
+    color: black;
 }
 
 /* ========================================
