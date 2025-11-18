@@ -1,6 +1,9 @@
 <?php
+// ============================================
+// CHARGEMENT DES STYLES ET SCRIPTS
+// ============================================
+
 function nathalie_mota_enqueue_styles() {
-    // Charge le style.css principal
     wp_enqueue_style(
         'nathalie-mota-style', 
         get_stylesheet_uri(), 
@@ -10,112 +13,195 @@ function nathalie_mota_enqueue_styles() {
 }
 add_action('wp_enqueue_scripts', 'nathalie_mota_enqueue_styles');
 
-function mon_theme_setup() {
-    register_nav_menus(array(
-        'menu-principal' => 'Menu Principal', // 'menu-principal' est l'identifiant de l'emplacement
-        'footer_menu'  => 'Footer Menu',
-    ));
+function motaphoto_enqueue_fonts() {
+    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600;700&display=swap');
 }
-add_action('after_setup_theme', 'mon_theme_setup');
+add_action('wp_enqueue_scripts', 'motaphoto_enqueue_fonts');
 
-function mon_theme_scripts() {
-    wp_enqueue_script(
-        'mon-theme-scripts', // Identifiant unique
-        get_template_directory_uri() . '/assets/js/script.js', 
-        array(), // Dépendances (laissez vide si aucune)
-        '1.0.0', // Version
-        true // Charger dans le footer
-    );
-}
-add_action('wp_enqueue_scripts', 'mon_theme_scripts');
-
-// Enregistrer les scripts
 function motaphoto_enqueue_scripts() {
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
     
-    // Script des filtres
+    // jQuery (inclus dans WordPress)
+    wp_enqueue_script('jquery');
+    
+    // Script principal
     wp_enqueue_script(
-        'photo-filters',
+        'motaphoto-scripts',
         get_template_directory_uri() . '/assets/js/script.js',
-        array(),
+        array('jquery'),
         '1.0.0',
         true
     );
-    
-    wp_localize_script('photo-filters', 'ajaxurl', admin_url('admin-ajax.php'));
 }
 add_action('wp_enqueue_scripts', 'motaphoto_enqueue_scripts');
 
-// Fonction AJAX pour filtrer les photos
-function filter_photos() {
-    $categorie = isset($_POST['categorie']) ? intval($_POST['categorie']) : 0;
-    $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
-    $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'date_desc';
-    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+// ============================================
+// CONFIGURATION DU THÈME
+// ============================================
+
+function mon_theme_setup() {
+    // Support des menus
+    register_nav_menus(array(
+        'menu-principal' => 'Menu Principal',
+        'footer_menu'  => 'Footer Menu',
+    ));
+    
+    // Support des images à la une
+    add_theme_support('post-thumbnails');
+    
+    // Tailles d'images personnalisées
+    add_image_size('photo-thumbnail', 564, 564, true);
+    add_image_size('photo-large', 1200, 800, false);
+}
+add_action('after_setup_theme', 'mon_theme_setup');
+
+// ============================================
+// ENREGISTRER LE CUSTOM POST TYPE "PHOTO"
+// ============================================
+
+function create_photo_post_type() {
+    register_post_type('photo',
+        array(
+            'labels' => array(
+                'name' => 'Photos',
+                'singular_name' => 'Photo',
+                'add_new' => 'Ajouter une photo',
+                'add_new_item' => 'Ajouter une nouvelle photo',
+                'edit_item' => 'Modifier la photo',
+                'new_item' => 'Nouvelle photo',
+                'view_item' => 'Voir la photo',
+                'search_items' => 'Rechercher des photos',
+                'not_found' => 'Aucune photo trouvée',
+                'not_found_in_trash' => 'Aucune photo dans la corbeille'
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'rewrite' => array('slug' => 'photo'),
+            'supports' => array('title', 'editor', 'thumbnail'),
+            'menu_icon' => 'dashicons-camera',
+            'show_in_rest' => true,
+        )
+    );
+    
+    // Taxonomie Format
+    register_taxonomy(
+        'format',
+        'photo',
+        array(
+            'label' => 'Formats',
+            'hierarchical' => true,
+            'show_in_rest' => true,
+        )
+    );
+}
+add_action('init', 'create_photo_post_type');
+
+// ============================================
+// VARIABLES AJAX
+// ============================================
+
+function enregistrer_scripts_filtres() {
+    wp_add_inline_script('jquery', '
+        var filtresAjax = {
+            ajax_url: "' . admin_url('admin-ajax.php') . '",
+            nonce: "' . wp_create_nonce('filtres_posts_nonce') . '"
+        };
+        console.log("Variables AJAX chargées:", filtresAjax);
+    ');
+}
+add_action('wp_enqueue_scripts', 'enregistrer_scripts_filtres');
+
+// ============================================
+// FONCTION AJAX POUR FILTRER LES PHOTOS
+// ============================================
+
+function filtrer_posts_ajax() {
+    check_ajax_referer('filtres_posts_nonce', 'nonce');
+    
+    $categories = isset($_POST['categories']) ? array_map('intval', $_POST['categories']) : array();
+    $formats = isset($_POST['formats']) ? array_map('intval', $_POST['formats']) : array();
+    $orderby = isset($_POST['orderby']) ? sanitize_text_field($_POST['orderby']) : 'date';
+    $order = isset($_POST['order']) ? sanitize_text_field($_POST['order']) : 'DESC';
+    $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
+    $posts_per_page = 8;
     
     $args = array(
         'post_type' => 'photo',
-        'posts_per_page' => 8,
-        'paged' => $page,
+        'posts_per_page' => $posts_per_page,
+        'paged' => $paged,
+        'orderby' => $orderby,
+        'order' => $order,
+        'post_status' => 'publish'
     );
     
-    // Filtre par catégorie (WP Core)
-    if ($categorie) {
-        $args['cat'] = $categorie;
-    }
+    $tax_query = array();
     
-    // Filtre par format (Taxonomie personnalisée)
-    if ($format) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'format',
-                'field' => 'slug',
-                'terms' => $format,
-            ),
+    if (!empty($categories)) {
+        $tax_query[] = array(
+            'taxonomy' => 'category',
+            'field' => 'term_id',
+            'terms' => $categories,
+            'operator' => 'IN'
         );
     }
     
-    // Tri
-    if ($sort === 'date_asc') {
-        $args['orderby'] = 'date';
-        $args['order'] = 'ASC';
-    } else {
-        $args['orderby'] = 'date';
-        $args['order'] = 'DESC';
+    if (!empty($formats)) {
+        $tax_query[] = array(
+            'taxonomy' => 'format',
+            'field' => 'term_id',
+            'terms' => $formats,
+            'operator' => 'IN'
+        );
+    }
+    
+    if (!empty($tax_query)) {
+        $args['tax_query'] = $tax_query;
+        if (count($tax_query) > 1) {
+            $args['tax_query']['relation'] = 'AND';
+        }
     }
     
     $query = new WP_Query($args);
     
     ob_start();
     
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            get_template_part_photo_item(); // Fonction helper ci-dessous
-        }
-    } else {
-        echo '<p class="no-photos">Aucune photo trouvée.</p>';
-    }
+    if ($query->have_posts()) :
+        echo '<div class="thumbnail-container-accueil">';
+        while ($query->have_posts()) : $query->the_post();
+            get_template_part_photo_item();
+        endwhile;
+        echo '</div>';
+    else :
+        echo '<div class="no-results-wrapper">';
+        echo '<p class="no-results">Aucun résultat trouvé pour ces filtres.</p>';
+        echo '</div>';
+    endif;
     
-    $html = ob_get_clean();
     wp_reset_postdata();
     
+    $output = ob_get_clean();
+    
     wp_send_json_success(array(
-        'html' => $html,
-        'max_pages' => $query->max_num_pages
+        'html' => $output,
+        'count' => $query->found_posts,
+        'max_pages' => $query->max_num_pages,
+        'current_page' => $paged
     ));
 }
-add_action('wp_ajax_filter_photos', 'filter_photos');
-add_action('wp_ajax_nopriv_filter_photos', 'filter_photos');
+add_action('wp_ajax_filtrer_posts', 'filtrer_posts_ajax');
+add_action('wp_ajax_nopriv_filtrer_posts', 'filtrer_posts_ajax');
 
-// Fonction helper pour afficher une photo (évite la duplication de code)
+// ============================================
+// FONCTION HELPER POUR AFFICHER UNE PHOTO
+// ============================================
+
 function get_template_part_photo_item() {
     if (has_post_thumbnail()) : ?>
         <div class="custom-post-thumbnail">
             <div class="thumbnail-wrapper">
                 <a href="<?php the_permalink(); ?>">
-                    <?php the_post_thumbnail('large'); ?>
+                    <?php the_post_thumbnail('photo-thumbnail'); ?>
                     <div class="thumbnail-overlay">
                         <i class="fas fa-eye icon-eye"></i>
                         <i class="fas fa-expand-arrows-alt fullscreen-icon"></i>
@@ -144,151 +230,10 @@ function get_template_part_photo_item() {
     <?php endif;
 }
 
-function motaphoto_enqueue_fonts() {
-    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600&display=swap');
-}
-add_action('wp_enqueue_scripts', 'motaphoto_enqueue_fonts');
-
-function adding_JQuery() {
-    // Enregistrer votre script avec jQuery comme dépendance
-    wp_enqueue_script(
-        'adding_JQuery',
-        get_template_directory_uri() . '/assets/js/jquery.js',
-        array('jquery'), // Dépendance jQuery
-        '1.0.0',
-        true // Charger dans le footer
-    );
-}
-add_action('wp_enqueue_scripts', 'adding_JQuery');
-
-
-/**
- * SYSTÈME DE FILTRES AJAX POUR WORDPRESS
- * À ajouter dans functions.php
- */
-
 // ============================================
-// 1. ENREGISTRER LES SCRIPTS ET VARIABLES AJAX
+// SCRIPT JAVASCRIPT AVEC AJAX
 // ============================================
-function enregistrer_scripts_filtres() {
-    // Créer un fichier JS inline pour s'assurer que les variables sont disponibles
-    wp_add_inline_script('jquery', '
-        var filtresAjax = {
-            ajax_url: "' . admin_url('admin-ajax.php') . '",
-            nonce: "' . wp_create_nonce('filtres_posts_nonce') . '"
-        };
-        console.log("Variables AJAX chargées:", filtresAjax);
-    ');
-}
-add_action('wp_enqueue_scripts', 'enregistrer_scripts_filtres');
 
-// ============================================
-// 2. FONCTION AJAX POUR FILTRER LES POSTS
-// ============================================
-function filtrer_posts_ajax() {
-    // Vérification de sécurité
-    check_ajax_referer('filtres_posts_nonce', 'nonce');
-    
-    // Récupérer les paramètres
-    $categories = isset($_POST['categories']) ? array_map('intval', $_POST['categories']) : array();
-    $formats = isset($_POST['formats']) ? array_map('intval', $_POST['formats']) : array();
-    $orderby = isset($_POST['orderby']) ? sanitize_text_field($_POST['orderby']) : 'date';
-    $order = isset($_POST['order']) ? sanitize_text_field($_POST['order']) : 'DESC';
-    
-    // Pagination
-    $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
-    $posts_per_page = 12; // Nombre de photos par page
-    
-    // Arguments de la requête
-    $args = array(
-        'post_type' => 'photo', // ⚠️ MODIFIER selon votre type de post
-        'posts_per_page' => $posts_per_page,
-        'paged' => $paged,
-        'orderby' => $orderby,
-        'order' => $order,
-        'post_status' => 'publish'
-    );
-    
-    // Ajouter les filtres de taxonomie
-    $tax_query = array();
-    
-    if (!empty($categories)) {
-        $tax_query[] = array(
-            'taxonomy' => 'category', // ⚠️ MODIFIER selon votre taxonomie
-            'field' => 'term_id',
-            'terms' => $categories,
-            'operator' => 'IN'
-        );
-    }
-    
-    if (!empty($formats)) {
-        $tax_query[] = array(
-            'taxonomy' => 'format', // ⚠️ MODIFIER selon votre taxonomie
-            'field' => 'term_id',
-            'terms' => $formats,
-            'operator' => 'IN'
-        );
-    }
-    
-    if (!empty($tax_query)) {
-        $args['tax_query'] = $tax_query;
-        if (count($tax_query) > 1) {
-            $args['tax_query']['relation'] = 'AND';
-        }
-    }
-    
-    // Exécuter la requête
-    $query = new WP_Query($args);
-    
-    ob_start();
-    
-    if ($query->have_posts()) :
-        echo '<div class="photos-grid">';
-        while ($query->have_posts()) : $query->the_post();
-            ?>
-            <div class="photo-item">
-                <?php if (has_post_thumbnail()) : ?>
-                    <a href="<?php the_permalink(); ?>" class="photo-link">
-                        <?php the_post_thumbnail('large', array('class' => 'photo-img')); ?>
-                    </a>
-                <?php endif; ?>
-                <div class="photo-overlay">
-                    <h3 class="photo-title"><?php the_title(); ?></h3>
-                    <?php 
-                    // Afficher la catégorie
-                    $terms = get_the_terms(get_the_ID(), 'categorie');
-                    if ($terms && !is_wp_error($terms)) :
-                        echo '<span class="photo-category">' . esc_html($terms[0]->name) . '</span>';
-                    endif;
-                    ?>
-                </div>
-            </div>
-            <?php
-        endwhile;
-        echo '</div>';
-    else :
-        echo '<div class="no-results-wrapper">';
-        echo '<p class="no-results">Aucun résultat trouvé pour ces filtres.</p>';
-        echo '</div>';
-    endif;
-    
-    wp_reset_postdata();
-    
-    $output = ob_get_clean();
-    
-    wp_send_json_success(array(
-        'html' => $output,
-        'count' => $query->found_posts,
-        'max_pages' => $query->max_num_pages,
-        'current_page' => $paged
-    ));
-}
-add_action('wp_ajax_filtrer_posts', 'filtrer_posts_ajax');
-add_action('wp_ajax_nopriv_filtrer_posts', 'filtrer_posts_ajax');
-
-// ============================================
-// 3. SCRIPT JAVASCRIPT AVEC AJAX
-// ============================================
 function ajouter_script_filtres() {
     ?>
     <script>
@@ -297,8 +242,18 @@ function ajouter_script_filtres() {
         console.log('filtresAjax disponible:', typeof filtresAjax !== 'undefined');
         
         var currentPage = 1;
-        var maxPages = 1;
+        var maxPages = <?php 
+            // Calculer max_pages au chargement
+            $initial_query = new WP_Query(array(
+                'post_type' => 'photo',
+                'posts_per_page' => 8
+            ));
+            echo $initial_query->max_num_pages;
+            wp_reset_postdata();
+        ?>;
         var isLoading = false;
+        
+        console.log('Max pages initial:', maxPages);
         
         // === OUVRIR/FERMER LES DROPDOWNS ===
         $('.filtre-header').on('click', function() {
@@ -321,11 +276,9 @@ function ajouter_script_filtres() {
             var dropdown = $(this).closest('.filtre-dropdown');
             var filtreType = dropdown.data('filtre');
             
-            // Pour catégories et formats : permettre multi-sélection
             if (filtreType === 'categories' || filtreType === 'formats') {
                 $(this).toggleClass('selected');
                 
-                // Mettre à jour le label
                 var selectedCount = dropdown.find('.filtre-option.selected').length;
                 var labelText = dropdown.data('filtre').toUpperCase();
                 
@@ -335,7 +288,6 @@ function ajouter_script_filtres() {
                     dropdown.find('.filtre-label').text(labelText);
                 }
             } else {
-                // Pour le tri : sélection unique
                 var options = dropdown.find('.filtre-option');
                 options.removeClass('selected');
                 $(this).addClass('selected');
@@ -347,7 +299,6 @@ function ajouter_script_filtres() {
                 dropdown.find('.filtre-options').slideUp(200);
             }
             
-            // ⚡ APPLIQUER LE FILTRE
             appliquerFiltres();
         });
         
@@ -360,14 +311,11 @@ function ajouter_script_filtres() {
                 return;
             }
             
-            // Vérifier que filtresAjax existe
             if (typeof filtresAjax === 'undefined') {
                 console.error('❌ filtresAjax non défini !');
-                alert('Erreur: Variables AJAX non chargées. Vérifiez la console.');
                 return;
             }
             
-            // Reset la page si ce n'est pas "charger plus"
             if (!loadMore) {
                 currentPage = 1;
             }
@@ -382,7 +330,6 @@ function ajouter_script_filtres() {
                 paged: currentPage
             };
             
-            // Catégories sélectionnées
             $('[data-filtre="categories"] .filtre-option.selected').each(function() {
                 var termId = $(this).data('term-id');
                 if (termId !== '' && termId !== undefined) {
@@ -390,7 +337,6 @@ function ajouter_script_filtres() {
                 }
             });
             
-            // Formats sélectionnés
             $('[data-filtre="formats"] .filtre-option.selected').each(function() {
                 var termId = $(this).data('term-id');
                 if (termId !== '' && termId !== undefined) {
@@ -398,7 +344,6 @@ function ajouter_script_filtres() {
                 }
             });
             
-            // Ordre de tri
             var triSelected = $('[data-filtre="tri"] .filtre-option.selected');
             if (triSelected.length) {
                 filtresActifs.orderby = triSelected.data('orderby');
@@ -406,16 +351,12 @@ function ajouter_script_filtres() {
             }
             
             console.log('📊 Filtres actifs:', filtresActifs);
-            console.log('🌐 URL AJAX:', filtresAjax.ajax_url);
             
-            // Vérifier que le conteneur existe
             if ($('#posts-container').length === 0) {
                 console.error('❌ #posts-container introuvable !');
-                alert('Erreur: Le conteneur #posts-container est manquant dans votre page.');
                 return;
             }
             
-            // Afficher un loader
             if (!loadMore) {
                 $('#posts-container').html('<div class="loader">Chargement</div>');
             } else {
@@ -424,23 +365,16 @@ function ajouter_script_filtres() {
             
             isLoading = true;
             
-            // 🔄 APPEL AJAX
-            console.log('🚀 Envoi de la requête AJAX...');
             $.ajax({
                 url: filtresAjax.ajax_url,
                 type: 'POST',
                 data: filtresActifs,
-                beforeSend: function() {
-                    console.log('⏳ Requête envoyée...');
-                },
                 success: function(response) {
                     console.log('✅ Réponse reçue:', response);
                     if (response.success) {
                         if (loadMore) {
-                            // Ajouter les nouvelles photos
-                            $('.photos-grid').append($(response.data.html).find('.photo-item'));
+                            $('.thumbnail-container-accueil').append($(response.data.html).find('.custom-post-thumbnail'));
                         } else {
-                            // Remplacer tout le contenu
                             $('#posts-container').html(response.data.html);
                         }
                         
@@ -448,7 +382,6 @@ function ajouter_script_filtres() {
                         console.log('📈 Nombre de résultats:', response.data.count);
                         console.log('📄 Page:', response.data.current_page, '/', maxPages);
                         
-                        // Gérer le bouton "Charger plus"
                         updateLoadMoreButton();
                     } else {
                         console.error('❌ Erreur dans la réponse:', response);
@@ -458,8 +391,7 @@ function ajouter_script_filtres() {
                 },
                 error: function(xhr, status, error) {
                     console.error('❌ Erreur AJAX:', {xhr, status, error});
-                    console.error('Response Text:', xhr.responseText);
-                    $('#posts-container').html('<p class="no-results">Erreur de connexion. Vérifiez la console.</p>');
+                    $('#posts-container').html('<p class="no-results">Erreur de connexion.</p>');
                     isLoading = false;
                 }
             });
@@ -472,17 +404,23 @@ function ajouter_script_filtres() {
             }
             
             var btn = $('#load-more-btn');
+            
             if (currentPage >= maxPages) {
-                btn.hide();
+                btn.html('Charger plus').prop('disabled', true).css('opacity', '0.5');
             } else {
-                btn.show().html('Charger plus').prop('disabled', false);
+                btn.html('Charger plus').prop('disabled', false).css('opacity', '1');
             }
+            
+            btn.show();
+            $('#load-more-container').show();
         }
         
         // === CLIC SUR "CHARGER PLUS" ===
         $(document).on('click', '#load-more-btn', function() {
-            currentPage++;
-            appliquerFiltres(true);
+            if (!$(this).prop('disabled')) {
+                currentPage++;
+                appliquerFiltres(true);
+            }
         });
         
         // Fermer les dropdowns en cliquant ailleurs
@@ -493,6 +431,10 @@ function ajouter_script_filtres() {
             }
         });
         
+        // Initialiser le bouton au chargement de la page
+        setTimeout(function() {
+            updateLoadMoreButton();
+        }, 500);
     });
     </script>
     <?php
@@ -500,8 +442,9 @@ function ajouter_script_filtres() {
 add_action('wp_footer', 'ajouter_script_filtres');
 
 // ============================================
-// 4. GÉNÉRER LES FILTRES DYNAMIQUES
+// GÉNÉRER LES FILTRES DYNAMIQUES
 // ============================================
+
 function generer_filtres_dynamiques() {
     ob_start();
     ?>
@@ -517,7 +460,7 @@ function generer_filtres_dynamiques() {
                 <div class="filtre-option" data-term-id="">Toutes</div>
                 <?php
                 $categories = get_terms(array(
-                    'taxonomy' => 'category', // ⚠️ MODIFIER selon votre taxonomie
+                    'taxonomy' => 'category',
                     'hide_empty' => false,
                 ));
                 
@@ -570,8 +513,6 @@ function generer_filtres_dynamiques() {
             <div class="filtre-options">
                 <div class="filtre-option selected" data-orderby="date" data-order="DESC">Plus récent</div>
                 <div class="filtre-option" data-orderby="date" data-order="ASC">Plus ancien</div>
-                <div class="filtre-option" data-orderby="title" data-order="ASC">A-Z</div>
-                <div class="filtre-option" data-orderby="title" data-order="DESC">Z-A</div>
             </div>
         </div>
 
@@ -579,75 +520,33 @@ function generer_filtres_dynamiques() {
     
     <!-- CONTENEUR DES RÉSULTATS -->
     <div id="posts-container">
-       <!-- Section | Miniatures Personnalisées -->
-        <div class="custom-post-thumbnails">
-            <input type="hidden" name="current-page" value="1" id="current-page">
-            <input type="hidden" name="current-categorie" value="" id="current-categorie">
-            <input type="hidden" name="current-format" value="" id="current-format">
-            <input type="hidden" name="current-sort" value="date_desc" id="current-sort">
-            
-            <div class="thumbnail-container-accueil">
-                <?php
-                // Arguments | Requête pour les publications personnalisées
-                $args_custom_posts = array(
-                    'post_type' => 'photo',
-                    'posts_per_page' => 8,  // 8 photos au départ
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'paged' => 1,
-                );        
+        <div class="thumbnail-container-accueil">
+            <?php
+            $args_custom_posts = array(
+                'post_type' => 'photo',
+                'posts_per_page' => 8,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'paged' => 1,
+            );        
 
-                $custom_posts_query = new WP_Query($args_custom_posts);
-                $max_pages = $custom_posts_query->max_num_pages;
+            $custom_posts_query = new WP_Query($args_custom_posts);
 
-                // Boucle | Parcourir les publications personnalisées
-                while ($custom_posts_query->have_posts()) :
-                    $custom_posts_query->the_post();
-                ?>
-                <div class="custom-post-thumbnail">
-                    <?php if (has_post_thumbnail()) : ?>
-                        <div class="thumbnail-wrapper">
-                            <a href="<?php the_permalink(); ?>">
-                                <?php the_post_thumbnail('large'); ?>
-                                <!-- Section | Overlay Catalogue -->
-                                <div class="thumbnail-overlay">
-                                    <i class="fas fa-eye icon-eye"></i>
-                                    <i class="fas fa-expand-arrows-alt fullscreen-icon"></i>
-                                    <?php
-                                    // Récupère la référence et la catégorie de l'image associée.
-                                    $related_reference_photo = get_field('reference_photo');
-                                    $categories = get_the_category();
-                                    $category_names = array();
+            while ($custom_posts_query->have_posts()) :
+                $custom_posts_query->the_post();
+                get_template_part_photo_item();
+            endwhile;
 
-                                    if ($categories) {
-                                        foreach ($categories as $category) {
-                                            $category_names[] = esc_html($category->name);
-                                        }
-                                    }
-                                    ?>
-                                    <!-- Overlay | Récupère la Référence et la Catégorie -->
-                                    <div class="photo-info">
-                                        <div class="photo-info-left">
-                                            <p><?php echo esc_html($related_reference_photo); ?></p>
-                                        </div>
-                                        <div class="photo-info-right">
-                                            <p><?php echo implode(', ', $category_names); ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <?php endwhile; ?>
-
-                <?php wp_reset_postdata(); ?>
-            </div>
-            
-        </div>  
+            wp_reset_postdata();
+            ?>
+        </div>
+    </div>
+    
+    <!-- Bouton Charger Plus (initialisé au chargement) -->
+    <div id="load-more-container" style="display: flex; justify-content: center; margin: 40px 0;">
+        <button id="load-more-btn" class="load-more-button">Charger plus</button>
     </div>
     <?php
     return ob_get_clean();
 }
 add_shortcode('filtres_dynamiques', 'generer_filtres_dynamiques');
-

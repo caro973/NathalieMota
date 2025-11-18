@@ -1,20 +1,15 @@
-<?php get_template_part('template-part/modal-contact');?>
-<footer class="footer">
-   <nav class="footer__nav">
+<footer class="site-footer">
     <?php
-    // Vérifie que le menu « footer_menu » a bien été assigné
-    if ( has_nav_menu( 'footer_menu' ) ) {
-        wp_nav_menu( array(
-            'theme_location' => 'footer_menu',
-            'container'      => false,
-            'menu_class'     => 'footer-menu',
-        ) );
-    } else {
-        // Optionnel : afficher un message de secours pendant le dev
-        echo '<!-- Footer menu not assigned -->';
-    }
+    wp_nav_menu(array(
+        'theme_location' => 'footer_menu',
+        'container'      => 'nav',
+        'container_class' => 'footer-navigation',
+        'menu_id'        => 'menu-footer-menu',
+        'fallback_cb'    => false,
+    ));
     ?>
-</nav>
-<?php wp_footer()?>
+</footer>
+
+<?php wp_footer(); ?>
 </body>
 </html>

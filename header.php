@@ -1,27 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes(); ?>>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nathalie Mota</title>
-    <?php wp_head() ?>
+    <title><?php wp_title('|', true, 'right'); bloginfo('name'); ?></title>
+    <?php wp_head(); ?>
 </head>
-<body>
+<body <?php body_class(); ?>>
+    
     <nav class="menu-navigation">
         <div class="logo">
-            <a href="<?php echo esc_url(home_url('/')); ?>"><img class="header__heading" src="<?php echo get_template_directory_uri(); ?>/assets/images/Logo.png" alt="Logo Nathalie Mota" /></a>
+            <a href="<?php echo esc_url(home_url('/')); ?>">
+                <img class="header__heading" src="<?php echo get_template_directory_uri(); ?>/assets/images/Logo.png" alt="Logo Nathalie Mota" />
+            </a>
         </div>
+        
         <?php
         wp_nav_menu(array(
-            'theme_location' => 'menu-principal', // Doit correspondre à l'identifiant enregistré
-            'container'      => false,            // Pas de conteneur HTML autour
-            'menu_class'     => 'menu-liste',     // Classe CSS pour la liste <ul>
-            'fallback_cb'    => false,            // Pas de menu de secours
+            'theme_location' => 'menu-principal',
+            'container'      => false,
+            'menu_class'     => 'menu-liste',
+            'fallback_cb'    => false,
         ));
         ?>
     </nav>
-    <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" />
-    <?php wp_enqueue_script('jquery'); ?>
-    <?php wp_enqueue_script('enregistrer_scripts_filtres'); ?>
+    
+    <?php 
+    // Afficher l'image header seulement sur la page d'accueil
+    if (is_front_page()) : 
+    ?>
+        <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" />
+    <?php endif; ?>
+    
+    <!-- Modale de contact -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeContactModal()">&times;</span>
+            
+            <div class="logo-container">
+                <img class="contact-header" src="<?php echo get_template_directory_uri(); ?>/assets/images/contact-header.png" alt="Contact" />
+            </div>
+            
+            <?php 
+            // Insérer le formulaire Contact Form 7
+            // Remplacez '4' par l'ID de votre formulaire
+            echo do_shortcode('[contact-form-7 id="4" title="Formulaire de contact"]'); 
+            ?>
+        </div>
+    </div>
+    
+    <script>
+    // Fonctions pour la modale de contact
+    function openContactModal(reference) {
+        document.getElementById('contact-modal').style.display = 'block';
+        
+        // Pré-remplir le champ référence si disponible
+        if (reference) {
+            setTimeout(function() {
+                var refField = document.querySelector('input[name="your-reference"]');
+                if (refField) {
+                    refField.value = reference;
+                }
+            }, 100);
+        }
+    }
+    
+    function closeContactModal() {
+        document.getElementById('contact-modal').style.display = 'none';
+    }
+    
+    // Fermer la modale en cliquant en dehors
+    window.onclick = function(event) {
+        var modal = document.getElementById('contact-modal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    
+    // Ouvrir la modale depuis le menu
+    jQuery(document).ready(function($) {
+        $('.menu-liste a[href*="contact"]').click(function(e) {
+            e.preventDefault();
+            openContactModal();
+        });
+    });
+    </script>
 </body>
 </html>
