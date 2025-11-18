@@ -15,6 +15,13 @@
             </a>
         </div>
         
+        <!-- Bouton burger mobile -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
         <?php
         wp_nav_menu(array(
             'theme_location' => 'menu-principal',
@@ -24,6 +31,32 @@
         ));
         ?>
     </nav>
+    
+    <script>
+    // Menu burger mobile
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuListe = document.querySelector('.menu-liste');
+        
+        if (menuToggle && menuListe) {
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                menuListe.classList.toggle('mobile-menu-open');
+                document.body.style.overflow = menuListe.classList.contains('mobile-menu-open') ? 'hidden' : '';
+            });
+            
+            // Fermer le menu quand on clique sur un lien
+            const menuLinks = menuListe.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    menuToggle.classList.remove('active');
+                    menuListe.classList.remove('mobile-menu-open');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+    });
+    </script>
     
     <?php 
     // Afficher l'image header seulement sur la page d'accueil
