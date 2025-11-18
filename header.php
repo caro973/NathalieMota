@@ -21,5 +21,7 @@
         ?>
     </nav>
     <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" />
+    <?php wp_enqueue_script('jquery'); ?>
+    <?php wp_enqueue_script('enregistrer_scripts_filtres'); ?>
 </body>
 </html>
