@@ -106,6 +106,11 @@ h1, h2, h3 {
     color: #E60000;
 }
 
+/* Cacher le burger sur desktop */
+.menu-toggle {
+    display: none;
+}
+
 /* ========================================
    MENU MOBILE AVEC BURGER
 ======================================== */
@@ -119,7 +124,7 @@ h1, h2, h3 {
         width: 138px;
     }
     
-    /* Bouton burger */
+    /* Afficher le bouton burger sur mobile */
     .menu-toggle {
         display: block;
         background: none;
@@ -127,6 +132,7 @@ h1, h2, h3 {
         cursor: pointer;
         padding: 5px;
         z-index: 1001;
+        position: relative;
     }
     
     .menu-toggle span {
@@ -178,23 +184,6 @@ h1, h2, h3 {
     .menu-navigation .menu-liste a {
         font-size: 44px;
         font-weight: 400;
-    }
-    
-    /* Cacher le bouton burger desktop */
-    .menu-toggle {
-        display: none;
-    }
-}
-
-/* Afficher le burger uniquement sur mobile */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-    }
-    
-    /* Cacher le menu desktop sur mobile */
-    .menu-navigation .menu-liste:not(.mobile-menu-open) {
-        display: none;
     }
 }
 
@@ -689,12 +678,12 @@ textarea {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0;
-        margin: 50px 146px 50px 146px;
+        margin: 50px 146px 30px 146px;
         align-items: flex-start;
     }
     
     .single-photo-info {
-        padding-right: 40px;
+        padding-right: 100px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -714,18 +703,18 @@ textarea {
     .photo-title {
         font-size: 66px;
         font-weight: 400;
-        margin: 0 0 15px 0;
+        margin: 0 0 18px 0;
         font-family: 'Space Mono', monospace;
         font-style: italic;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.03em;
         line-height: 58px;
     }
     
     .photo-details {
         border-top: 1px solid #B8BBC2;
-        padding-top: 0;
-        margin-top: 10px;
+        padding: 0;
+        margin: 0;
     }
     
     .photo-detail-item {
@@ -737,7 +726,11 @@ textarea {
     }
     
     .photo-detail-item:first-child {
-        padding-top: 18px;
+        padding-top: 10px;
+    }
+    
+    .photo-detail-item:last-child {
+        border-bottom: none;
     }
     
     .detail-label {
@@ -758,11 +751,11 @@ textarea {
     
     .single-photo-contact {
         margin-top: 30px;
+        padding-top: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0;
-        border: none;
+        border-top: 1px solid #B8BBC2;
     }
     
     .contact-text {
@@ -798,10 +791,11 @@ textarea {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 0 146px;
-        padding: 20px 0;
+        margin: 30px 146px 50px 146px;
+        padding: 0;
         border-top: 1px solid #B8BBC2;
         border-bottom: 1px solid #B8BBC2;
+        height: 118px;
     }
     
     .photo-nav-thumbnail {
@@ -818,22 +812,24 @@ textarea {
     
     .photo-nav-arrows {
         display: flex;
-        gap: 0;
+        gap: 5px;
         align-items: center;
     }
     
     .nav-arrow {
-        width: 50px;
-        height: 50px;
+        width: auto;
+        height: auto;
         background: transparent;
         border: none;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        font-size: 28px;
         transition: transform 0.3s ease;
         color: #000;
+        padding: 10px;
+        font-family: 'Space Mono', monospace;
     }
     
     .nav-arrow:hover {
@@ -847,7 +843,7 @@ textarea {
     
     /* Section "Vous aimerez aussi" */
     .related-photos {
-        margin: 80px 146px 60px 146px;
+        margin: 0 146px 80px 146px;
     }
     
     .related-photos h2 {

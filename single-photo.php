@@ -45,34 +45,34 @@ get_header();
                     
                     <?php if ($reference) : ?>
                     <div class="photo-detail-item">
-                        <span class="detail-label">Référence :</span>
+                        <span class="detail-label">RÉFÉRENCE</span>
                         <span class="detail-value"><?php echo esc_html($reference); ?></span>
                     </div>
                     <?php endif; ?>
                     
                     <?php if (!empty($category_names)) : ?>
                     <div class="photo-detail-item">
-                        <span class="detail-label">Catégorie :</span>
+                        <span class="detail-label">CATÉGORIE</span>
                         <span class="detail-value"><?php echo implode(', ', $category_names); ?></span>
                     </div>
                     <?php endif; ?>
                     
                     <?php if (!empty($format_names)) : ?>
                     <div class="photo-detail-item">
-                        <span class="detail-label">Format :</span>
+                        <span class="detail-label">FORMAT</span>
                         <span class="detail-value"><?php echo implode(', ', $format_names); ?></span>
                     </div>
                     <?php endif; ?>
                     
                     <?php if ($type) : ?>
                     <div class="photo-detail-item">
-                        <span class="detail-label">Type :</span>
+                        <span class="detail-label">TYPE</span>
                         <span class="detail-value"><?php echo esc_html($type); ?></span>
                     </div>
                     <?php endif; ?>
                     
                     <div class="photo-detail-item">
-                        <span class="detail-label">Année :</span>
+                        <span class="detail-label">ANNÉE</span>
                         <span class="detail-value"><?php echo esc_html($annee); ?></span>
                     </div>
                 </div>

@@ -71,7 +71,7 @@
             <span class="close-modal" onclick="closeContactModal()">&times;</span>
             
             <div class="logo-container">
-                <img class="contact-header" src="<?php echo get_template_directory_uri(); ?>/assets/images/contact-header.png" alt="Contact" />
+                <div class="contact-header-text">CONTACT</div>
             </div>
             
             <?php 
