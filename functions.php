@@ -19,8 +19,6 @@ function motaphoto_enqueue_fonts() {
 add_action('wp_enqueue_scripts', 'motaphoto_enqueue_fonts');
 
 function motaphoto_enqueue_scripts() {
-    // Font Awesome
-    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
     
     // jQuery (inclus dans WordPress)
     wp_enqueue_script('jquery');
@@ -51,7 +49,7 @@ function mon_theme_setup() {
     add_theme_support('post-thumbnails');
     
     // Tailles d'images personnalisées
-    add_image_size('photo-thumbnail', 564, 564, true);
+    add_image_size('photo-thumbnail', 564, 495, true);
     add_image_size('photo-large', 1200, 800, false);
 }
 add_action('after_setup_theme', 'mon_theme_setup');
@@ -203,10 +201,24 @@ function get_template_part_photo_item() {
                 <a href="<?php the_permalink(); ?>">
                     <?php the_post_thumbnail('photo-thumbnail'); ?>
                     <div class="thumbnail-overlay">
-                        <i class="fas fa-eye icon-eye"></i>
-                        <i class="fas fa-expand-arrows-alt fullscreen-icon"></i>
-                        <?php
-                        $related_reference_photo = get_field('reference_photo');
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Icon_eye.png" 
+                                alt="Voir" 
+                                class="icon-eye" />
+                    <?php
+                        $reference = esc_html( get_field('references') );          // ou toute autre métadonnée
+                        $categories = get_the_category();
+                        $cat_names  = wp_list_pluck( $categories, 'name' );
+                        $cat_string = esc_html( implode( ', ', $cat_names ) );
+                        ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Icon_fullscreen.png" 
+                                alt="Plein écran" 
+                                class="fullscreen-icon lightbox-trigger"
+                                data-full-image="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>" 
+                       
+                                    data-ref="<?php echo $reference; ?>"
+                            data-category="<?php echo $cat_string; ?>" />
+                        <?
+                        $related_reference_photo = get_field('references');
                         $categories = get_the_category();
                         $category_names = array();
                         if ($categories) {
@@ -307,12 +319,12 @@ function ajouter_script_filtres() {
             console.log('=== DÉBUT APPLIQUER FILTRES ===');
             
             if (isLoading) {
-                console.log('⏸️ Chargement en cours, requête ignorée');
+                console.log('Chargement en cours, requête ignorée');
                 return;
             }
             
             if (typeof filtresAjax === 'undefined') {
-                console.error('❌ filtresAjax non défini !');
+                console.error(' filtresAjax non défini !');
                 return;
             }
             
@@ -350,10 +362,10 @@ function ajouter_script_filtres() {
                 filtresActifs.order = triSelected.data('order');
             }
             
-            console.log('📊 Filtres actifs:', filtresActifs);
+            console.log(' Filtres actifs:', filtresActifs);
             
             if ($('#posts-container').length === 0) {
-                console.error('❌ #posts-container introuvable !');
+                console.error(' #posts-container introuvable !');
                 return;
             }
             
@@ -370,7 +382,7 @@ function ajouter_script_filtres() {
                 type: 'POST',
                 data: filtresActifs,
                 success: function(response) {
-                    console.log('✅ Réponse reçue:', response);
+                    console.log('Réponse reçue:', response);
                     if (response.success) {
                         if (loadMore) {
                             $('.thumbnail-container-accueil').append($(response.data.html).find('.custom-post-thumbnail'));
@@ -379,18 +391,18 @@ function ajouter_script_filtres() {
                         }
                         
                         maxPages = response.data.max_pages;
-                        console.log('📈 Nombre de résultats:', response.data.count);
-                        console.log('📄 Page:', response.data.current_page, '/', maxPages);
+                        console.log(' Nombre de résultats:', response.data.count);
+                        console.log(' Page:', response.data.current_page, '/', maxPages);
                         
                         updateLoadMoreButton();
                     } else {
-                        console.error('❌ Erreur dans la réponse:', response);
+                        console.error(' Erreur dans la réponse:', response);
                         $('#posts-container').html('<p class="no-results">Erreur lors du chargement.</p>');
                     }
                     isLoading = false;
                 },
                 error: function(xhr, status, error) {
-                    console.error('❌ Erreur AJAX:', {xhr, status, error});
+                    console.error(' Erreur AJAX:', {xhr, status, error});
                     $('#posts-container').html('<p class="no-results">Erreur de connexion.</p>');
                     isLoading = false;
                 }
@@ -435,8 +447,97 @@ function ajouter_script_filtres() {
         setTimeout(function() {
             updateLoadMoreButton();
         }, 500);
-    });
+
+        
+// === LIGHTBOX PLEIN ÉCRAN (POPUP MODALE CENTRÉE) ===
+var currentIndex = 0;
+var galleryItems = [];
+
+$(document).on('click', '.lightbox-trigger', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Récupérer tous les éléments de la galerie
+    galleryItems = $('.lightbox-trigger').toArray();
+    currentIndex = galleryItems.indexOf(this);
+
+    var fullImageUrl = $(this).data('full-image');
+    var ref = $(this).data('ref');
+    var category = $(this).data('category');
+
+    // Créer la popup si elle n'existe pas
+    if ($('#lightbox-popup').length === 0) {
+        $('body').append(`
+            <div id="lightbox-overlay" class="lightbox-overlay"></div>
+            <div id="lightbox-popup" class="lightbox-popup">
+                <button class="lightbox-close">&times;</button>
+                <button class="lightbox-nav lightbox-prev">&#10094; Précédent</button>
+                <div class="lightbox-content">
+                    <img id="lightbox-image" src="">
+                    <div class="lightbox-footer">
+                        <span id="lightbox-ref">Référence: ${ref}</span>
+                        <span id="lightbox-category">${category}</span>
+                    </div>
+                </div>
+                <button class="lightbox-nav lightbox-next">Suivant &#10095;</button>
+            </div>
+        `);
+    }
+
+    // Mettre à jour l'image et les infos
+    $('#lightbox-image').attr('src', fullImageUrl);
+    $('#lightbox-ref').text('Référence: ' + ref);
+    $('#lightbox-category').text(category);
+
+    // Afficher la popup
+    $('#lightbox-overlay, #lightbox-popup').fadeIn(300);
+    $('body').addClass('lightbox-open');
+});
+
+// Navigation précédente
+$(document).on('click', '.lightbox-prev', function(e) {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    var item = $(galleryItems[currentIndex]);
+    $('#lightbox-image').attr('src', item.data('full-image'));
+    $('#lightbox-ref').text('Référence: ' + item.data('ref'));
+    $('#lightbox-category').text(item.data('category'));
+});
+
+// Navigation suivante
+$(document).on('click', '.lightbox-next', function(e) {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    var item = $(galleryItems[currentIndex]);
+    $('#lightbox-image').attr('src', item.data('full-image'));
+    $('#lightbox-ref').text('Référence: ' + item.data('ref'));
+    $('#lightbox-category').text(item.data('category'));
+});
+
+// Fermeture de la popup
+$(document).on('click', '.lightbox-close, #lightbox-overlay', function(e) {
+    $('#lightbox-overlay, #lightbox-popup').fadeOut(300);
+    $('body').removeClass('lightbox-open');
+});
+
+// Navigation au clavier
+$(document).keyup(function(e) {
+    if ($('#lightbox-popup').is(':visible')) {
+        if (e.key === "Escape") {
+            $('.lightbox-close').click();
+        } else if (e.key === "ArrowLeft") {
+            $('.lightbox-prev').click();
+        } else if (e.key === "ArrowRight") {
+            $('.lightbox-next').click();
+        }
+    }
+});
+
+        // === FIN DU BLOC LIGHTBOX ===
+        
+    }); // ← Fermeture du jQuery(document).ready
     </script>
+
     <?php
 }
 add_action('wp_footer', 'ajouter_script_filtres');

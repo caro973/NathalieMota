@@ -18,8 +18,8 @@ get_header();
                 <div class="photo-details">
                     <?php 
                     // Récupérer les champs ACF
-                    $reference = get_field('reference_photo');
-                    $type = get_field('type');
+                    $reference = get_field('references');
+                    $type = get_field('types');
                     
                     // Récupérer les catégories
                     $categories = get_the_category();
@@ -156,27 +156,26 @@ get_header();
                                 <a href="<?php the_permalink(); ?>">
                                     <?php the_post_thumbnail('photo-thumbnail'); ?>
                                     <div class="thumbnail-overlay">
-                                        <i class="fas fa-eye icon-eye"></i>
-                                        <i class="fas fa-expand-arrows-alt fullscreen-icon"></i>
-                                        <?php
-                                        $related_reference = get_field('reference_photo');
-                                        $related_categories = get_the_category();
-                                        $related_cat_names = array();
-                                        if ($related_categories) {
-                                            foreach ($related_categories as $cat) {
-                                                $related_cat_names[] = esc_html($cat->name);
-                                            }
-                                        }
-                                        ?>
-                                        <div class="photo-info">
-                                            <div class="photo-info-left">
-                                                <p><?php echo esc_html($related_reference); ?></p>
-                                            </div>
-                                            <div class="photo-info-right">
-                                                <p><?php echo implode(', ', $related_cat_names); ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
+    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Icon_eye.png" alt="Voir" class="icon-eye" />
+    <?php
+    $related_reference = get_field('references');
+    $related_categories = get_the_category();
+    $related_cat_names = array();
+    if ($related_categories) {
+        foreach ($related_categories as $cat) {
+            $related_cat_names[] = esc_html($cat->name);
+        }
+    }
+    ?>
+    <div class="photo-info">
+        <div class="photo-info-left">
+            <p><?php echo esc_html($related_reference); ?></p>
+        </div>
+        <div class="photo-info-right">
+            <p><?php echo implode(', ', $related_cat_names); ?></p>
+        </div>
+    </div>
+</div>
                                 </a>
                             </div>
                         </div>

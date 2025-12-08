@@ -31,92 +31,14 @@
         ));
         ?>
     </nav>
-    
-    <script>
-    // Menu burger mobile
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuListe = document.querySelector('.menu-liste');
-        
-        if (menuToggle && menuListe) {
-            menuToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                menuListe.classList.toggle('mobile-menu-open');
-                document.body.style.overflow = menuListe.classList.contains('mobile-menu-open') ? 'hidden' : '';
-            });
-            
-            // Fermer le menu quand on clique sur un lien
-            const menuLinks = menuListe.querySelectorAll('a');
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    menuToggle.classList.remove('active');
-                    menuListe.classList.remove('mobile-menu-open');
-                    document.body.style.overflow = '';
-                });
-            });
-        }
-    });
-    </script>
-    
-    <?php 
+
+            <?php 
     // Afficher l'image header seulement sur la page d'accueil
     if (is_front_page()) : 
     ?>
         <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" />
     <?php endif; ?>
+ 
     
-    <!-- Modale de contact -->
-    <div id="contact-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeContactModal()">&times;</span>
-            
-            <div class="logo-container">
-                <div class="contact-header-text">CONTACT</div>
-            </div>
-            
-            <?php 
-            // Insérer le formulaire Contact Form 7
-            // Remplacez '4' par l'ID de votre formulaire
-            echo do_shortcode('[contact-form-7 id="4" title="Formulaire de contact"]'); 
-            ?>
-        </div>
-    </div>
-    
-    <script>
-    // Fonctions pour la modale de contact
-    function openContactModal(reference) {
-        document.getElementById('contact-modal').style.display = 'block';
-        
-        // Pré-remplir le champ référence si disponible
-        if (reference) {
-            setTimeout(function() {
-                var refField = document.querySelector('input[name="your-reference"]');
-                if (refField) {
-                    refField.value = reference;
-                }
-            }, 100);
-        }
-    }
-    
-    function closeContactModal() {
-        document.getElementById('contact-modal').style.display = 'none';
-    }
-    
-    // Fermer la modale en cliquant en dehors
-    window.onclick = function(event) {
-        var modal = document.getElementById('contact-modal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    }
-    
-    // Ouvrir la modale depuis le menu
-    jQuery(document).ready(function($) {
-        $('.menu-liste a[href*="contact"]').click(function(e) {
-            e.preventDefault();
-            openContactModal();
-        });
-    });
-    </script>
 </body>
 </html>
