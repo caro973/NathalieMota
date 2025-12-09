@@ -552,38 +552,40 @@ function generer_filtres_dynamiques() {
     <div class="filtres-container">
         
         <!-- FILTRE CATÉGORIES -->
-        <div class="filtre-dropdown" data-filtre="categories">
-            <div class="filtre-header">
-                <span class="filtre-label">CATÉGORIES</span>
-                <span class="filtre-icone">▼</span>
-            </div>
-            <div class="filtre-options">
-                <div class="filtre-option" data-term-id="">Toutes</div>
-                <?php
-                $categories = get_terms(array(
+
+        <div class="filtres-cate-form">
+            <div class="filtre-dropdown" data-filtre="categories">
+                <div class="filtre-header">
+                    <span class="filtre-label">CATÉGORIES</span>
+                    <span class="filtre-icone">▼</span>
+                </div>
+                <div class="filtre-options">
+                    <div class="filtre-option" data-term-id="">Toutes</div>
+                    <?php
+                    $categories = get_terms(array(
                     'taxonomy' => 'category',
                     'hide_empty' => false,
-                ));
+                    ));
                 
-                if (!empty($categories) && !is_wp_error($categories)) :
+                    if (!empty($categories) && !is_wp_error($categories)) :
                     foreach ($categories as $cat) :
-                ?>
+                    ?>
                     <div class="filtre-option" data-term-id="<?php echo esc_attr($cat->term_id); ?>">
                         <?php echo esc_html($cat->name); ?>
                     </div>
-                <?php 
+                    <?php 
                     endforeach;
-                endif;
-                ?>
+                    endif;
+                    ?>
+                </div>
             </div>
-        </div>
 
         <!-- FILTRE FORMATS -->
-        <div class="filtre-dropdown" data-filtre="formats">
-            <div class="filtre-header">
+            <div class="filtre-dropdown" data-filtre="formats">
+                <div class="filtre-header">
                 <span class="filtre-label">FORMATS</span>
                 <span class="filtre-icone">▼</span>
-            </div>
+                </div>
             <div class="filtre-options">
                 <div class="filtre-option" data-term-id="">Tous</div>
                 <?php
@@ -602,21 +604,23 @@ function generer_filtres_dynamiques() {
                     endforeach;
                 endif;
                 ?>
+                </div>
             </div>
         </div>
-
+    
         <!-- FILTRE TRIER PAR -->
-        <div class="filtre-dropdown" data-filtre="tri">
-            <div class="filtre-header">
-                <span class="filtre-label">TRIER PAR</span>
-                <span class="filtre-icone">▼</span>
+        <div class="filtre-container-trie">
+            <div class="filtre-dropdown" data-filtre="tri">
+                <div class="filtre-header">
+                    <span class="filtre-label">TRIER PAR</span>
+                    <span class="filtre-icone">▼</span>
             </div>
             <div class="filtre-options">
                 <div class="filtre-option selected" data-orderby="date" data-order="DESC">Plus récent</div>
                 <div class="filtre-option" data-orderby="date" data-order="ASC">Plus ancien</div>
             </div>
+            </div>
         </div>
-
     </div>
     
     <!-- CONTENEUR DES RÉSULTATS -->

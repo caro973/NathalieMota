@@ -371,12 +371,28 @@ textarea {
 ======================================== */
 
 .filtres-container {
-    display: flex;
-    justify-content: center;
+     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 0 20px 135px;
     gap: 20px;
-    margin-bottom: 30px;
-    padding: 0 20px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1440px;
 }
+
+.filtres-cate-form{
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    max-width: 40%;
+}
+
+.filtre-container-trie{
+        flex: 0 0 auto;
+    min-width: 250px;
+}
+
 
 /* PC et tablette : filtres sur une ligne */
 @media (min-width: 769px) {
@@ -395,15 +411,29 @@ textarea {
 
 /* Smartphone : filtres en colonne */
 @media (max-width: 768px) {
-    .filtres-container {
+    /* Conteneur principal des filtres */
+
+ .filtres-container {
         flex-direction: column;
         gap: 15px;
-        margin-top: 23px;
+        margin: 11px auto;
+        padding-left: 23px;
+        padding-right: 23px;
     }
-    
+
+    .filtres-cate-form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .filtre-container-trie {
+        flex: none;
+        width: 100%;
+    }
+
     .filtre-dropdown {
         width: 100%;
-        min-width: 100%;
+                min-width: 344px;
     }
 }
 
