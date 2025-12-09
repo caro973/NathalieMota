@@ -154,7 +154,7 @@ h1, h2, h3 {
     }
     
     .menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(8px, -8px);
+        transform: rotate(-45deg) translate(4px, -3px);
     }
     
     /* Menu mobile caché par défaut */
@@ -179,11 +179,13 @@ h1, h2, h3 {
     /* Menu mobile ouvert */
     .menu-navigation .menu-liste.mobile-menu-open {
         right: 0;
+                background-color: #E00000;
     }
     
     .menu-navigation .menu-liste a {
         font-size: 44px;
         font-weight: 400;
+        color: white;
     }
 }
 
@@ -253,6 +255,11 @@ body > img.header {
    FORMULAIRE CONTACT (MODALE)
 ======================================== */
 
+#wpcf7-f4-o1{
+    display: flex;
+    justify-content: center;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -265,13 +272,15 @@ body > img.header {
 }
 
 .modal-content {
-    border: 5px solid black;
+      position: relative;
     background: white;
+    border: 5px solid black;
     margin: 2% auto;
-    padding: 40px;
+    padding: 9px;
     width: 600px;
     max-width: 90%;
-    position: relative;
+        height: 100%;
+    overflow: hidden; /* Cache les parties du logo qui dépassent */
 }
 
 .logo-container {
@@ -289,6 +298,7 @@ body > img.header {
 #wpcf7-f4-o1 > form {
     display: flex;
     flex-direction: column;
+    margin-left: 57px;
 }
 
 #wpcf7-f4-o1 label {
@@ -304,7 +314,6 @@ body > img.header {
     width: 100%;
     max-width: 263px;
     border: 1px solid #B8BBC2;
-    margin-bottom: 20px;
     padding: 0 15px;
 }
 
@@ -316,15 +325,15 @@ textarea {
     padding: 10px;
     min-height: 100px;
 }
-
+#wpcf7-f4-o1 > form >p{
+    margin: 5px;
+}
 #wpcf7-f4-o1 input[type="submit"] {
     border: none;
     border-radius: 2px;
     height: 50px;
     background-color: #D8D8D8;
     width: 270px;
-    max-width: 100%;
-    margin-top: 20px;
     font-family: "SpaceMono";
     font-weight: 400;
     cursor: pointer;
@@ -343,7 +352,19 @@ textarea {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    color: white;
 }
+
+#contact-modal > div > img{
+    max-width: 718px; /* Ajuste selon la taille souhaitée */
+    height: auto;
+    position: relative;
+    left: -50px; /* Décale le logo vers la gauche pour qu'il dépasse */
+    margin-left: -30px;
+        margin-bottom: 48px;
+}
+
+
 
 /* ========================================
    FILTRES RESPONSIVE
@@ -377,6 +398,7 @@ textarea {
     .filtres-container {
         flex-direction: column;
         gap: 15px;
+        margin-top: 23px;
     }
     
     .filtre-dropdown {
@@ -475,6 +497,11 @@ textarea {
 /* ========================================
    GRILLE DE PHOTOS UNIFIÉE
 ======================================== */
+.thumbnail-wrapper a {
+    display: block;
+    width: 645px!important; 
+    height: 495px!important;
+}
 
 #posts-container{
     padding-left: 10px;
@@ -504,6 +531,7 @@ body > div.single-photo-page > div.related-photos{
     .thumbnail-container-accueil {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 /* Smartphone : 1 colonne */
@@ -518,8 +546,8 @@ body > div.single-photo-page > div.related-photos{
     position: relative;
     overflow: hidden;
     aspect-ratio: 1;
-        width: 645px;
-    height: 495px;
+        width: 645px !important;
+    height: 495px!important;
 }
 
 .thumbnail-wrapper {
@@ -528,11 +556,7 @@ body > div.single-photo-page > div.related-photos{
     position: relative;
 }
 
-.thumbnail-wrapper a {
-    display: block;
-       width: 645px;
-    height: 495px;
-}
+
 
 .thumbnail-wrapper img {
     width: 100%;
@@ -700,6 +724,7 @@ img.icon-eye{
 ======================================== */
 
 @media (min-width: 769px) {
+
     .single-photo-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -707,7 +732,7 @@ img.icon-eye{
         margin: 50px 146px 30px 146px;
         align-items: flex-start;
     }
-    
+  
     .single-photo-info {
         padding-right: 100px;
         display: flex;
@@ -899,6 +924,17 @@ img.icon-eye{
         padding: 0;
     }
     
+      .thumbnail-wrapper a {
+    display: block;
+    width: 353px !important;
+    height: 229px !important;
+    }
+
+    .custom-post-thumbnail {
+        width: 353px !important;
+    height: 229px !important;
+    }
+
     .single-photo-container {
         display: flex;
         flex-direction: column;

@@ -1,5 +1,6 @@
 <footer class="site-footer">
-    <?php
+<?php get_template_part("./template-part/modal-contact");
+    
     wp_nav_menu(array(
         'theme_location' => 'footer_menu',
         'container'      => 'nav',
@@ -14,11 +15,8 @@
     <div id="contact-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeContactModal()">&times;</span>
-            
             <div class="logo-container">
-                <div class="contact-header-text">CONTACT</div>
-            </div>
-            
+    </div>
             <?php 
             // Insérer le formulaire Contact Form 7
             // Remplacez '4' par l'ID de votre formulaire
