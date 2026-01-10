@@ -78,12 +78,7 @@ get_header();
                 </div>
                 
                 <!-- Section Contact -->
-                <div class="single-photo-contact">
-                    <p class="contact-text">Cette photo vous intéresse ?</p>
-                    <button class="contact-button" onclick="openContactModal('<?php echo esc_js($reference); ?>')">
-                        Contact
-                    </button>
-                </div>
+                
             </div>
             
             <!-- COLONNE DROITE : Image -->
@@ -96,7 +91,14 @@ get_header();
         
         <!-- Navigation entre photos -->
         <div class="single-photo-navigation">
+            <div class="single-photo-contact">
+                    <p class="contact-text">Cette photo vous intéresse ?</p>
+                    <button class="contact-button" onclick="openContactModal('<?php echo esc_js($reference); ?>')">
+                        Contact
+                    </button>
+                </div>
             <div class="photo-nav-thumbnail">
+                
                 <?php
                 // Photo suivante
                 $next_post = get_next_post();
@@ -191,18 +193,9 @@ get_header();
 </div>
 
 <script>
-// Fonction pour ouvrir la modale de contact avec la référence pré-remplie
-function openContactModal(reference) {
-    // Si vous avez une modale de contact, l'ouvrir ici
-    // et pré-remplir le champ référence
-    console.log('Ouvrir modale contact avec référence:', reference);
-    
-    // Exemple si vous avez une modale jQuery
-    if (typeof jQuery !== 'undefined') {
-        jQuery('#contact-modal').fadeIn();
-        jQuery('#reference-field').val(reference);
-    }
-}
+
+
+
 
 // Prévisualisation de la photo au survol de la miniature
 jQuery(document).ready(function($) {

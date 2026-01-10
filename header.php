@@ -24,10 +24,10 @@
         
         <?php
         wp_nav_menu(array(
-            'theme_location' => 'menu-principal',
-            'container'      => false,
-            'menu_class'     => 'menu-liste',
-            'fallback_cb'    => false,
+            'theme_location' => 'menu-principal', // Emplacement du menu
+            'container'      => false, // Balise HTML qui entoure le menu, false indique qu'il n'y en a pas 
+            'menu_class'     => 'menu-liste', //Ce paramètre ajoute une classe CSS à la balise <ul> qui contient les éléments du menu.
+            'fallback_cb'    => false, // Désactive le menu de secours
         ));
         ?>
     </nav>
