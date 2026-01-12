@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ////////////////////////FONCTION MODALE CONTACT/////////////////////////
 
-// Fonctions pour la modale de contact
+// Fonctions pour la modale de contact rend la modale visible
 function openContactModal(reference) {
     document.getElementById('contact-modal').style.display = 'block';
     

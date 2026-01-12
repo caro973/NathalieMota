@@ -97,6 +97,7 @@ get_header();
                         Contact
                     </button>
                 </div>
+            <div class= thumbnail-arrows>
             <div class="photo-nav-thumbnail">
                 
                 <?php
@@ -125,6 +126,7 @@ get_header();
                         onclick="window.location.href='<?php echo !empty($next_post) ? get_permalink($next_post->ID) : '#'; ?>'">
                     →
                 </button>
+            </div>
             </div>
         </div>
         

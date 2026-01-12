@@ -363,8 +363,19 @@ textarea {
     margin-left: -30px;
         margin-bottom: 48px;
 }
+/* ========================================
+   NAV SINGLE PHOTO
+======================================== */
 
+.contact-button{
+    width: 272px;
+    margin-left: 51px;
+}
 
+div.thumbnail-arrows{
+    margin-top: 18px;
+
+}
 
 /* ========================================
    FILTRES RESPONSIVE
