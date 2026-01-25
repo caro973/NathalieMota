@@ -1,17 +1,22 @@
 <?php
 /**
  * Template Name: Galerie Photos
- * Template pour afficher la galerie de photos avec filtres
+ * Description: Affiche la galerie de photos avec les filtres dynamiques.
  */
 
-get_header(); 
-?>
+get_header(); ?>
 
-<div class="photo-gallery-page">
-    <?php 
-    // Afficher les filtres et la galerie
-    echo do_shortcode('[filtres_dynamiques]'); 
-    ?>
-</div>
+<main id="primary" class="site-main">
+
+    <section class="photo-gallery-page">
+
+        <?php
+        // Le shortcode est transformé en HTML grâce à do_shortcode()
+        echo do_shortcode( '[filtres_dynamiques]' );
+        ?>
+
+    </section>
+
+</main><!-- #primary -->
 
 <?php get_footer(); ?>

@@ -1,0 +1,288 @@
+@media (max-width: 768px) {
+    .menu-navigation {
+        padding: 15px 23px;
+    }
+
+    .menu-navigation img {
+        width: 138px;
+    }
+
+    /* Afficher le bouton burger sur mobile */
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        z-index: 1001;
+        position: relative;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: #000;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+
+    /* Animation du burger quand ouvert */
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(4px, -3px);
+    }
+
+    /* Menu mobile caché par défaut */
+    .menu-navigation .menu-liste {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        font-size: 44px;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Menu mobile ouvert */
+    .menu-navigation .menu-liste.mobile-menu-open {
+        right: 0;
+                background-color: #E00000;
+    }
+
+    .menu-navigation .menu-liste a {
+        font-size: 44px;
+        font-weight: 400;
+        color: white;
+    }
+
+    #menu-footer-menu {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px 0;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    #menu-footer-menu a {
+        font-size: 16px;
+    }
+
+    /* Conteneur principal des filtres */
+    .filtres-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 11px auto;
+        padding-right: 23px;
+        width: 70%;
+    }
+
+    .filtres-cate-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100% !important;
+    }
+
+    .filtre-container-trie {
+        flex: none;
+        width: 100%;
+    }
+
+    .thumbnail-container-accueil {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #posts-container > div > div:nth-child(1) > div{
+        width:100%;
+    }
+
+    body > div.single-photo-page > div.single-photo-navigation > div.thumbnail-arrows{
+        display: none;
+    }
+
+    body > div.single-photo-page > div.single-photo-container > div.single-photo-image > picture > img{
+        margin: auto;
+    }
+
+    #wpcf7-f4-o1 > form{
+        margin-left: 20px
+    }
+
+    .single-photo-page {
+        padding: 0;
+    }
+
+    .thumbnail-wrapper a {
+        display: block;
+    }
+
+    .single-photo-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+    }
+
+    .single-photo-image {
+        width: 100%;
+        order: 1;
+        padding: 0 23px;
+        margin-bottom: 20px;
+    }
+
+    .single-photo-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .single-photo-info {
+        order: 2;
+        padding: 0 17px;
+    }
+
+    .photo-title {
+        font-size: 46px;
+        font-weight: 400;
+        margin: 0 0 10px 0;
+        font-family: 'Space Mono', monospace;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 58px;
+    }
+
+    .lightbox-footer{
+        padding: 0px 0px !important;
+    }
+
+    .photo-details {
+        border: none;
+        padding: 0;
+        margin-top: 0;
+    }
+
+    .photo-detail-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border: none;
+        font-family: 'Space Mono', monospace;
+    }
+
+    .detail-label {
+        min-width: 100px;
+        font-weight: 400;
+        margin-right: 60px;
+        text-transform: uppercase;
+        font-size: 18px;
+        letter-spacing: 0.1em;
+        color: #000;
+    }
+
+    .detail-value {
+        font-weight: 400;
+        font-size: 16px;
+        letter-spacing: 0.1em;
+        color: #000;
+    }
+
+    .single-photo-contact {
+        margin-top: 25px;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 0;
+        border-top: solid;
+        border-bottom: solid;
+        border-width: thin;
+        padding-top: 1%;
+        padding-bottom: 2%;
+    }
+
+    .contact-text {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        margin: 0;
+        margin-right: 0px;
+        padding-left: 50px;
+        color: #000;
+    }
+
+    .contact-button {
+        background: #D8D8D8;
+        border: none;
+        padding: 8px 15px;
+        font-family: 'Space Mono', monospace;
+        font-size: 12px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        color: #000;
+        /* width: 100%; */
+        text-align: center;
+    }
+
+    .contact-button:active {
+        background: #000;
+        color: white;
+    }
+
+    /* Section "Vous aimerez aussi" */
+    .related-photos {
+        padding: 0 23px;
+    }
+
+    body > div.single-photo-page > div.related-photos{
+        margin: 0px !important;
+        margin-bottom: 10px;
+    }
+
+    .related-photos h2 {
+        font-size: 18px;
+        font-family: 'Space Mono', monospace;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #000;
+    }
+
+    .related-photos-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .related-photos-grid .custom-post-thumbnail {
+        width: 100%;
+    }
+}
