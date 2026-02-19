@@ -1,0 +1,32 @@
+# Nathalie Mota — Thème WordPress personnalisé
+
+> Site portfolio d'une photographe événementielle
+
+---
+
+## 🚀 Installation & mise en route
+
+### 1. Prérequis
+
+- WordPress ≥ 6.0
+- PHP ≥ 8.0
+- Extensions recommandées : **Contact Form 7**, **CPT UI**, **SCF (Secure Custom Fields)**
+
+### 2. Cloner le thème
+
+```bash
+cd wp-content/themes/
+git clone https://github.com/caro973/NathalieMota.git .
+```
+
+### 3. Activer le thème
+
+Apparence → Thèmes → Activer **Nathalie Mota**.
+
+## 🔗 Ressources
+
+- [Documentation WordPress - Thèmes](https://developer.wordpress.org/themes/)
+- [wp_enqueue_script()](https://developer.wordpress.org/reference/functions/wp_enqueue_script/)
+- [WP_Customize_Manager](https://developer.wordpress.org/themes/customize-api/)
+- [RGPD & sites web — CNIL](https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on)
+- [Contact Form 7](https://contactform7.com/)
