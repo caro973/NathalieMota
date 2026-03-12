@@ -115,15 +115,18 @@
         width:100%;
     }
 
-    body > div.single-photo-page > div.single-photo-navigation > div.thumbnail-arrows{
+    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    .single-photo-navigation .thumbnail-arrows {
         display: none;
     }
 
-    body > div.single-photo-page > div.single-photo-container > div.single-photo-image > picture > img{
+    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    .single-photo-image img {
         margin: auto;
     }
 
-    #wpcf7-f4-o1 > form{
+    /* CORRIGÉ (consigne 14) : ID CF7 remplacé par .wpcf7-form */
+    .wpcf7-form {
         margin-left: 20px
     }
 
@@ -140,12 +143,15 @@
         flex-direction: column;
         gap: 0;
         margin: 0;
+        /*  : padding latéral aligné sur .related-photos (padding: 0 23px) */
+        padding: 0 23px;
     }
 
     .single-photo-image {
         width: 100%;
         order: 1;
-        padding: 0 23px;
+        /*  : padding supprimé, géré par .single-photo-container */
+        padding: 0;
         margin-bottom: 20px;
     }
 
@@ -153,6 +159,7 @@
         width: 100%;
         height: auto;
         display: block;
+        margin-top: 15px;
     }
 
     .single-photo-info {
@@ -213,7 +220,7 @@
         flex-direction: column;
         align-items: center;
         gap: 15px;
-        padding: 0;
+        padding: 0 50px; /*  : padding latéral aligné sur .related-photos */
         border-top: solid;
         border-bottom: solid;
         border-width: thin;
@@ -227,14 +234,17 @@
         font-weight: 300;
         margin: 0;
         margin-right: 0px;
-        padding-left: 50px;
+        margin-top: 10px;
         color: #000;
+        display: flex;
+        align-self: flex-start;
     }
 
     .contact-button {
         background: #D8D8D8;
         border: none;
         padding: 8px 15px;
+        margin-bottom: 10px;
         font-family: 'Space Mono', monospace;
         font-size: 12px;
         font-weight: 400;
@@ -244,7 +254,6 @@
         border-radius: 2px;
         transition: all 0.3s ease;
         color: #000;
-        /* width: 100%; */
         text-align: center;
     }
 
@@ -258,9 +267,10 @@
         padding: 0 23px;
     }
 
-    body > div.single-photo-page > div.related-photos{
-        margin: 0px !important;
-        margin-bottom: 10px;
+    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    .related-photos {
+        margin: 0 !important;
+        margin-bottom: 10px !important;
     }
 
     .related-photos h2 {

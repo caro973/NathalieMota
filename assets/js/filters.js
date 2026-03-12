@@ -3,11 +3,6 @@
   =====================================================================*/
 
 jQuery(document).ready(function ($) {
-    /* -------------------------------------------------
-         LOGS de diagnostic (facultatifs)
-       ------------------------------------------------- */
-    console.log('Script filtres chargé');
-    console.log('filtresAjax disponible:', typeof filtresAjax !== 'undefined');
 
     /* -------------------------------------------------
          Variables globales du script
@@ -87,11 +82,9 @@ jQuery(document).ready(function ($) {
        SECTION C – APPLICATION DES FILTRES (requête AJAX)
        ============================================================== */
     function appliquerFiltres(loadMore = false) {
-        console.log('=== DÉBUT APPLIQUER FILTRES ===');
 
         // 1️⃣  Empêcher le lancement d’une nouvelle requête tant que la précédente n’est pas terminée
         if (isLoading) {
-            console.log('Chargement en cours, requête ignorée');
             return;
         }
 
@@ -168,7 +161,6 @@ jQuery(document).ready(function ($) {
             type: 'POST',
             data: filtresActifs,
             success: function (response) {
-                console.log('Réponse reçue:', response);
 
                 if (response.success) {
                     // Si on charge plus (scroll/pagination) → on ajoute les nouvelles vignettes

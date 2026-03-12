@@ -9,8 +9,8 @@
 /* 
    `DOMContentLoaded` se déclenche quand le DOM (la structure HTML) 
    est complètement chargé, mais avant que les images, CSS, etc. 
-   soient forcément terminés. C’est le bon moment pour attacher 
-   nos écouteurs d’événements. 
+   soient forcément terminés. C'est le bon moment pour attacher 
+   nos écouteurs d'événements. 
 */
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ----------------------------------------------------------
             Vérifier que les deux éléments existent réellement
-            (au cas où le thème serait utilisé sur une page qui n’a
+            (au cas où le thème serait utilisé sur une page qui n'a
             pas de menu burger). 
        ---------------------------------------------------------- */
     if (menuToggle && menuListe) {
@@ -32,11 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
            ------------------------------------------------------ */
         menuToggle.addEventListener('click', function () {
             /* 
-               - `this` = le bouton qui vient d’être cliqué.
+               - `this` = le bouton qui vient d'être cliqué.
                - `classList.toggle('active')` ajoute la classe *active* si elle
-                 n’est pas présente, ou la retire si elle l’est déjà.
+                 n'est pas présente, ou la retire si elle l'est déjà.
                - On applique la même logique à la liste du menu : 
-                 la classe *mobile-menu-open* indique qu’on veut la voir.
+                 la classe *mobile-menu-open* indique qu'on veut la voir.
                - Enfin, on bloque le scrolling du corps de la page quand le
                  menu est ouvert (`overflow: hidden`). Quand il est fermé,
                  on remet la valeur par défaut (`''`).
@@ -65,88 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });   // ← fin du DOMContentLoaded
 
 
-
-/* --------------------------------------------------------------
-   MODALE DE CONTACT
-   -------------------------------------------------------------- */
-
-/**
- * Ouvre la modale de contact.
- *
- * @param {string|null} reference – Si on fournit une référence (par ex.
- *                                 le numéro d’une photo), on la
- *                                 pré‑remplit dans le champ du formulaire.
- */
-function openContactModal(reference) {
-    //    Récupérer le conteneur de la modale
-    const modal = document.getElementById('contact-modal');
-    if (!modal) return;               // si la modale n’existe pas → on sort
-
-    //    Rendre la modale visible (elle est cachée en CSS avec display:none)
-    modal.style.display = 'block';
-
-    //    Si on a reçu une référence, on la place dans le champ du formulaire
-    if (reference) {
-        // on attend 100 ms pour être sûr que le champ est bien présent
-        setTimeout(() => {
-            const refField = document.querySelector('input[name="ref-photo"]');
-            if (refField) {
-                refField.value = reference;   // remplissage du champ
-            }
-        }, 100);
-    }
-}
-
-/**
- * Ferme la modale de contact.
- */
-function closeContactModal() {
-    const modal = document.getElementById('contact-modal');
-    if (modal) {
-        modal.style.display = 'none';   // masquer la modale
-    }
-}
-
-
-
-/* --------------------------------------------------------------
-   GESTION DES ÉVÉNEMENTS GLOBAUX
-   -------------------------------------------------------------- */
-
-/**
- * Ici on écoute **tous** les clics sur la fenêtre (`window`).
- * Cela nous permet de gérer deux choses :
- *   1. Fermer la modale lorsqu’on clique en dehors d’elle.
- *   2. Attacher les comportements d’ouverture de la modale aux liens
- *      qui portent la classe `.contact-link`.
- */
-window.addEventListener('click', function (event) {
-
-    /* ------------------------------------------------------
-            FERME LA MODALE SI ON CLIQUE EN DEHORS
-       ------------------------------------------------------ */
-    const modal = document.getElementById('contact-modal');
-    // `event.target` est l’élément qui a reçu le clic.
-    // Si cet élément **est exactement** la modale (c’est‑à‑dire le fond sombre),
-    // on la ferme.
-    if (modal && event.target === modal) {
-        closeContactModal();
-    }
-
-    /* ------------------------------------------------------
-           OUVRE LA MODALE DEPUIS LES LIENS « CONTACT »
-       ------------------------------------------------------ */
-    const contactLinks = document.querySelectorAll('.contact-link');
-    contactLinks.forEach(link => {
-        // Chaque lien reçoit son propre écouteur de clic
-        link.addEventListener('click', function (e) {
-            e.preventDefault();   // empêcher le comportement par défaut du lien (navigation)
-
-            // On récupère la référence stockée dans l’attribut data‑reference du lien
-            const reference = link.getAttribute('data-reference');
-
-            // On ouvre la modale en lui passant la référence (ou null si aucune)
-            openContactModal(reference);
-        });
-    });
-});
+// CORRIGÉ (consigne 9) : openContactModal(), closeContactModal() et leur
+// gestionnaire d'événements window 'click' ont été supprimés d'ici.
+// Ces fonctions sont désormais définies uniquement dans modal-contact.js
+// afin d'éviter les conflits liés à la double déclaration.

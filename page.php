@@ -1,26 +1,55 @@
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+<?php
+/**
+ * page.php — Template pour les pages statiques (thème classique)
+ *
+ * CORRIGÉ (consigne 11) : l'ancien fichier ne contenait que des blocs
+ * Gutenberg (wp:template-part, wp:post-content, etc.) incompatibles avec
+ * un thème classique (pas de theme.json, pas de dossier templates/).
+ * Remplacé par une boucle WordPress standard.
+ */
 
-<!-- wp:group {"tagName":"main"} -->
-<main class="wp-block-group"><!-- wp:group {"layout":{"inherit":true}} -->
-<div class="wp-block-group"><!-- wp:post-title {"level":1,"align":"wide","style":{"spacing":{"margin":{"bottom":"var(--wp--custom--spacing--medium, 6rem)"}}}} /-->
+get_header(); ?>
 
-<!-- wp:post-featured-image {"align":"wide","style":{"spacing":{"margin":{"bottom":"var(--wp--custom--spacing--medium, 6rem)"}}}} /-->
+<main class="site-main">
+    <div class="page-container">
 
-<!-- wp:separator {"align":"wide","className":"is-style-wide"} -->
-<hr class="wp-block-separator alignwide is-style-wide"/>
-<!-- /wp:separator --></div>
-<!-- /wp:group -->
+        <?php while ( have_posts() ) : the_post(); ?>
 
-<!-- wp:spacer {"height":32} -->
-<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
+            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-<!-- wp:post-content {"layout":{"inherit":true}} /-->
+                <!-- Titre de la page -->
+                <h1 class="page-title"><?php the_title(); ?></h1>
 
-<!-- wp:group {"layout":{"inherit":true}} -->
-<div class="wp-block-group">
-<!-- wp:post-comments {"style":{"spacing":{"padding":{"top":"var(--wp--custom--spacing--medium, 6rem)"}}}} /--></div>
-<!-- /wp:group --></main>
-<!-- /wp:group -->
+                <!-- Image mise en avant (si elle existe) -->
+                <?php if ( has_post_thumbnail() ) : ?>
+                    <div class="page-featured-image">
+                        <?php the_post_thumbnail( 'full' ); ?>
+                    </div>
+                <?php endif; ?>
 
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+                <!-- Contenu de la page -->
+                <div class="page-content">
+                    <?php the_content(); ?>
+                </div>
+
+                <!-- Pagination du contenu (si la page utilise <!--nextpage-->) -->
+                <?php
+                wp_link_pages( array(
+                    'before' => '<div class="page-links">' . __( 'Pages :', 'motaphoto' ),
+                    'after'  => '</div>',
+                ) );
+                ?>
+
+            </article>
+
+            <!-- Commentaires (si activés sur la page) -->
+            <?php if ( comments_open() || get_comments_number() ) : ?>
+                <?php comments_template(); ?>
+            <?php endif; ?>
+
+        <?php endwhile; ?>
+
+    </div>
+</main>
+
+<?php get_footer(); ?>

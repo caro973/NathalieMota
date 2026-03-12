@@ -20,11 +20,11 @@ function closeContactModal() {
     if (modal) modal.style.display = 'none';
 }
 
-/* Initialisation des événements (click sur les liens .contact‑link) */
+/* Initialisation des événements */
 window.addEventListener('click', function (event) {
     const modal = document.getElementById('contact-modal');
 
-    // Fermer la modale si on clique en dehors
+    // Fermer la modale si on clique sur le fond sombre
     if (modal && event.target === modal) {
         closeContactModal();
     }
@@ -37,4 +37,15 @@ window.addEventListener('click', function (event) {
             openContactModal(reference);
         });
     });
+});
+
+/* (consigne 18) : fermeture via .close-modal gérée ici
+   au lieu du onclick="jQuery('#contact-modal').fadeOut();" inline */
+document.addEventListener('DOMContentLoaded', function () {
+    const closeBtn = document.querySelector('.close-modal');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            closeContactModal();
+        });
+    }
 });

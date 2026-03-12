@@ -162,7 +162,9 @@ body > img.header {
    FORMULAIRE CONTACT (MODALE)
 ======================================== */
 
-#wpcf7-f4-o1{
+/* (consigne 14) : ID CF7 codé en dur remplacé par .wpcf7-form
+   stable même après migration ou export/import du formulaire */
+.wpcf7-form {
     display: flex;
     justify-content: center;
 }
@@ -202,20 +204,20 @@ body > img.header {
     display: block;
 }
 
-#wpcf7-f4-o1 > form {
+.wpcf7-form {
     display: flex;
     flex-direction: column;
     margin-left: 57px;
 }
 
-#wpcf7-f4-o1 label {
+.wpcf7-form label {
     font-family: "Poppins";
     font-weight: 500;
     color: black;
     margin-bottom: 5px;
 }
 
-#wpcf7-f4-o1 input {
+.wpcf7-form input {
     border-radius: 8px;
     height: 40px;
     width: 100%;
@@ -232,10 +234,10 @@ textarea {
     padding: 10px;
     min-height: 100px;
 }
-#wpcf7-f4-o1 > form >p{
+.wpcf7-form > p {
     margin: 5px;
 }
-#wpcf7-f4-o1 input[type="submit"] {
+.wpcf7-form input[type="submit"] {
     border: none;
     border-radius: 2px;
     height: 50px;
@@ -247,7 +249,7 @@ textarea {
     transition: background 0.3s ease;
 }
 
-#wpcf7-f4-o1 input[type="submit"]:hover {
+.wpcf7-form input[type="submit"]:hover {
     background-color: #000;
     color: white;
 }
@@ -278,7 +280,6 @@ textarea {
 .contact-button{
     width: 272px;
     height: 50px;
-    margin-left: 51px;
 }
 
 .thumbnail-arrows{
@@ -403,10 +404,12 @@ textarea {
 /* ========================================
    GRILLE DE PHOTOS UNIFIÉE
 ======================================== */
+/* (consigne 13) : suppression des tailles fixes !important
+   remplacées par des valeurs fluides pour ne pas bloquer le responsive */
 .thumbnail-wrapper a {
     display: block;
-    width: 645px!important;
-    height: 495px!important;
+    width: 100%;
+    height: 100%;
 }
 
 #posts-container{
@@ -426,8 +429,8 @@ textarea {
     margin-bottom: 40px;
 }
 
-body > div.single-photo-page > div.related-photos{
-    margin-left: 54px;
+/*  : margin-left supprimé, géré par padding de .single-photo-page */
+.related-photos {
     margin-bottom: 2%;
 }
 
@@ -596,13 +599,14 @@ img.icon-eye{
     column-gap: 7%;
 }
 
-body > div.single-photo-page > div.single-photo-container > div.single-photo-image > picture > img{
-    max-width: 80%;
+/* (consigne 12) : sélecteur simplifié */
+.single-photo-image img {
     /* height: 100%; */
 }
 
-.single-photo-info{
-    margin-left: 10%;
+.single-photo-info {
+    /*  : margin-left: 10% supprimé, alignement géré par .single-photo-page */
+    margin-left: 0;
 }
 
 /* ========================================
@@ -613,18 +617,24 @@ body > div.single-photo-page > div.single-photo-container > div.single-photo-ima
     max-width: 1440px;
     margin: 0 auto;
     padding: 0;
+    /*  : padding latéral uniforme sur toute la page
+       pour aligner container, navigation ET related-photos */
+    padding-left: 54px;
+    padding-right: 54px;
 }
 
 /* ========================================
    DESKTOP & TABLETTE (> 768px)
 ======================================== */
 
+/* (consigne 13) : suppression des tailles fixes !important
+   on garde aspect-ratio et on laisse la largeur s'adapter au conteneur */
 .custom-post-thumbnail {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 1;
-        width: 645px !important;
-    height: 495px!important;
+    aspect-ratio: 645 / 495;
+    width: 100%;
+    max-width: 645px;
 }
 
 /* ========================================

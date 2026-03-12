@@ -1,47 +1,87 @@
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+<?php
+/**
+ * single.php — Template pour les articles de blog (thème classique)
+ *
+ * CORRIGÉ (consigne 11) : l'ancien fichier ne contenait que des blocs
+ * Gutenberg (wp:template-part, wp:post-content, etc.) incompatibles avec
+ * un thème classique (pas de theme.json, pas de dossier templates/).
+ * Remplacé par une boucle WordPress standard.
+ */
 
-<!-- wp:group {"tagName":"main"} -->
-<main class="wp-block-group"><!-- wp:group {"layout":{"inherit":true}} -->
-<div class="wp-block-group"><!-- wp:post-title {"level":1,"align":"wide","style":{"spacing":{"margin":{"bottom":"var(--wp--custom--spacing--medium, 6rem)"}}}} /-->
+get_header(); ?>
 
-<!-- wp:post-featured-image {"align":"wide","style":{"spacing":{"margin":{"bottom":"var(--wp--custom--spacing--medium, 6rem)"}}}} /-->
+<main class="site-main">
+    <div class="single-container">
 
-<!-- wp:separator {"align":"wide","className":"is-style-wide"} -->
-<hr class="wp-block-separator alignwide is-style-wide"/>
-<!-- /wp:separator --></div>
-<!-- /wp:group -->
+        <?php while ( have_posts() ) : the_post(); ?>
 
-<!-- wp:spacer {"height":32} -->
-<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
+            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-<!-- wp:post-content {"layout":{"inherit":true}} /-->
+                <!-- Titre de l'article -->
+                <h1 class="entry-title"><?php the_title(); ?></h1>
 
-<!-- wp:spacer {"height":32} -->
-<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
+                <!-- Métadonnées : date, auteur, catégories, tags -->
+                <div class="entry-meta">
+                    <span class="entry-date">
+                        <time datetime="<?php echo get_the_date( 'c' ); ?>">
+                            <?php echo get_the_date( 'F j, Y' ); ?>
+                        </time>
+                    </span>
+                    <span class="entry-author">
+                        <?php the_author(); ?>
+                    </span>
+                    <?php if ( has_category() ) : ?>
+                        <span class="entry-categories">
+                            <?php the_category( ', ' ); ?>
+                        </span>
+                    <?php endif; ?>
+                    <?php if ( has_tag() ) : ?>
+                        <span class="entry-tags">
+                            <?php the_tags( '', ', ' ); ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
 
-<!-- wp:group {"layout":{"inherit":true}} -->
-<div class="wp-block-group"><!-- wp:group {"layout":{"type":"flex"}} -->
-<div class="wp-block-group"><!-- wp:post-date {"format":"F j, Y","style":{"typography":{"fontStyle":"italic","fontWeight":"400"}},"fontSize":"small"} /-->
+                <!-- Image mise en avant (si elle existe) -->
+                <?php if ( has_post_thumbnail() ) : ?>
+                    <div class="entry-featured-image">
+                        <?php the_post_thumbnail( 'full' ); ?>
+                    </div>
+                <?php endif; ?>
 
-<!-- wp:post-author {"showAvatar":false,"fontSize":"small"} /-->
+                <!-- Contenu de l'article -->
+                <div class="entry-content">
+                    <?php the_content(); ?>
+                </div>
 
-<!-- wp:post-terms {"term":"category","fontSize":"small"} /-->
+                <!-- Pagination du contenu (si l'article utilise <!--nextpage-->) -->
+                <?php
+                wp_link_pages( array(
+                    'before' => '<div class="page-links">' . __( 'Pages :', 'motaphoto' ),
+                    'after'  => '</div>',
+                ) );
+                ?>
 
-<!-- wp:post-terms {"term":"post_tag","fontSize":"small"} /--></div>
-<!-- /wp:group -->
+            </article>
 
-<!-- wp:spacer {"height":32} -->
-<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
+            <!-- Navigation précédent / suivant (articles de blog uniquement) -->
+            <nav class="post-navigation">
+                <?php
+                the_post_navigation( array(
+                    'prev_text' => '← %title',
+                    'next_text' => '%title →',
+                ) );
+                ?>
+            </nav>
 
-<!-- wp:separator {"className":"is-style-wide"} -->
-<hr class="wp-block-separator is-style-wide"/>
-<!-- /wp:separator -->
+            <!-- Commentaires -->
+            <?php if ( comments_open() || get_comments_number() ) : ?>
+                <?php comments_template(); ?>
+            <?php endif; ?>
 
-<!-- wp:post-comments /--></div>
-<!-- /wp:group --></main>
-<!-- /wp:group -->
+        <?php endwhile; ?>
 
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+    </div>
+</main>
+
+<?php get_footer(); ?>

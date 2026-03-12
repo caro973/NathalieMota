@@ -28,13 +28,11 @@
         padding-right: 10px;
     }
 
-    .single-photo-container{
-        padding-bottom: 13px;
-    }
-
     .single-photo-info {
         margin: auto;
-        padding-left: 7%;
+        margin-bottom: 0;
+        border-bottom: 1px solid #B8BBC2;
+        width: 80%;
     }
 
     .single-photo-image {
@@ -42,8 +40,9 @@
         max-width: 844px;
     }
 
-    body > div.single-photo-page > div.single-photo-container > div.single-photo-image > picture > img {
-        width: 80%;
+    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    .single-photo-image img {
+        width: 100%;
         display: block;
         height: 100%;
     }
@@ -60,16 +59,13 @@
     }
 
     .photo-details {
-        border-top: 1px solid #B8BBC2;
-        padding: 0;
-        margin: 0;
+        margin-bottom: 10px;
     }
 
     .photo-detail-item {
         display: flex;
         align-items: center;
         padding: 10px 0;
-        border-bottom: 1px solid #B8BBC2;
         font-family: 'Space Mono', monospace;
     }
 
@@ -100,15 +96,12 @@
     .single-photo-contact {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-left: 10px;
     }
 
     .contact-text {
         font-family: 'Poppins', sans-serif;
         font-size: 14px;
         font-weight: 300;
-        margin: 0;
         color: #000;
     }
 
@@ -124,6 +117,7 @@
         cursor: pointer;
         border-radius: 2px;
         transition: all 0.3s ease;
+        margin-left: 51px;
         color: #000;
     }
 
@@ -138,7 +132,6 @@
         justify-content: space-between;
         align-items: center;
         padding: 0;
-        border-top: 1px solid #B8BBC2;
         border-bottom: 1px solid #B8BBC2;
         height: 118px;
     }
@@ -186,10 +179,6 @@
         cursor: not-allowed;
     }
 
-    body > div.single-photo-page > div.single-photo-navigation > div.thumbnail-arrows{
-        margin-right: 10px;
-    }
-
     .related-photos h2 {
         font-size: 18px;
         font-family: 'Space Mono', monospace;
@@ -205,5 +194,9 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
+    }
+
+    .single-photo-container{
+        column-gap: 2%;
     }
 }

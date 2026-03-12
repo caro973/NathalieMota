@@ -40,5 +40,3 @@
     <?php endif; ?>
  
     
-</body>
-</html>

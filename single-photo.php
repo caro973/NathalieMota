@@ -92,41 +92,61 @@ get_header();
         <!-- Navigation entre photos -->
         <div class="single-photo-navigation">
             <div class="single-photo-contact">
-                    <p class="contact-text">Cette photo vous intéresse ?</p>
-                    <button class="contact-button" onclick="openContactModal('<?php echo esc_js($reference); ?>')">
-                        Contact
+                <p class="contact-text">Cette photo vous intéresse ?</p>
+                <button class="contact-button" onclick="openContactModal('<?php echo esc_js($reference); ?>')">
+                    Contact
+                </button>
+            </div>
+
+            <div class="thumbnail-arrows">
+
+                <?php
+                // (consigne 8) : navigation filtrée uniquement sur le CPT 'photo'
+                // get_next_post() / get_previous_post() naviguaient sur tous les post types.
+                // On récupère uniquement les IDs des photos publiées, triées par date DESC.
+                $all_photos = get_posts( array(
+                    'post_type'      => 'photo',
+                    'posts_per_page' => -1,
+                    'orderby'        => 'date',
+                    'order'          => 'DESC',
+                    'post_status'    => 'publish',
+                    'fields'         => 'ids', // IDs uniquement = requête légère
+                ) );
+
+                $current_index = array_search( get_the_ID(), $all_photos );
+                // index + 1 = photo plus ancienne (précédente)
+                $prev_post_id  = isset( $all_photos[ $current_index + 1 ] ) ? $all_photos[ $current_index + 1 ] : null;
+                // index - 1 = photo plus récente (suivante)
+                $next_post_id  = isset( $all_photos[ $current_index - 1 ] ) ? $all_photos[ $current_index - 1 ] : null;
+                ?>
+
+                <div class="photo-nav-thumbnail">
+                    <?php
+                    // CORRIGÉ : miniature de la photo suivante filtrée par CPT
+                    if ( $next_post_id ) {
+                        echo get_the_post_thumbnail( $next_post_id, 'thumbnail' );
+                    }
+                    ?>
+                </div>
+
+                <div class="photo-nav-arrows">
+                    <?php
+                    // (consigne 17) : onclick inline remplacé par data-url
+                    // L'URL est lue par photo-navigation.js via $(this).data('url')
+                    ?>
+                    <button class="nav-arrow nav-prev"
+                            <?php if ( ! $prev_post_id ) echo 'disabled'; ?>
+                            data-url="<?php echo $prev_post_id ? esc_url( get_permalink( $prev_post_id ) ) : ''; ?>">
+                        ←
+                    </button>
+
+                    <button class="nav-arrow nav-next"
+                            <?php if ( ! $next_post_id ) echo 'disabled'; ?>
+                            data-url="<?php echo $next_post_id ? esc_url( get_permalink( $next_post_id ) ) : ''; ?>">
+                        →
                     </button>
                 </div>
-            <div class= thumbnail-arrows>
-            <div class="photo-nav-thumbnail">
-                
-                <?php
-                // Photo suivante
-                $next_post = get_next_post();
-                if (!empty($next_post)) {
-                    echo get_the_post_thumbnail($next_post->ID, 'thumbnail');
-                }
-                ?>
-            </div>
-            
-            <div class="photo-nav-arrows">
-                <?php
-                $prev_post = get_previous_post();
-                $next_post = get_next_post();
-                ?>
-                
-                <button class="nav-arrow nav-prev" 
-                        <?php if (empty($prev_post)) echo 'disabled'; ?>
-                        onclick="window.location.href='<?php echo !empty($prev_post) ? get_permalink($prev_post->ID) : '#'; ?>'">
-                    ←
-                </button>
-                
-                <button class="nav-arrow nav-next" 
-                        <?php if (empty($next_post)) echo 'disabled'; ?>
-                        onclick="window.location.href='<?php echo !empty($next_post) ? get_permalink($next_post->ID) : '#'; ?>'">
-                    →
-                </button>
-            </div>
+
             </div>
         </div>
         
@@ -140,10 +160,10 @@ get_header();
                 $current_categories = wp_get_post_categories(get_the_ID());
                 
                 $related_args = array(
-                    'post_type' => 'photo',
+                    'post_type'      => 'photo',
                     'posts_per_page' => 2,
-                    'post__not_in' => array(get_the_ID()),
-                    'orderby' => 'rand',
+                    'post__not_in'   => array(get_the_ID()),
+                    'orderby'        => 'rand',
                 );
                 
                 if (!empty($current_categories)) {
@@ -160,26 +180,26 @@ get_header();
                                 <a href="<?php the_permalink(); ?>">
                                     <?php the_post_thumbnail('photo-thumbnail'); ?>
                                     <div class="thumbnail-overlay">
-    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Icon_eye.png" alt="Voir" class="icon-eye" />
-    <?php
-    $related_reference = get_field('references');
-    $related_categories = get_the_category();
-    $related_cat_names = array();
-    if ($related_categories) {
-        foreach ($related_categories as $cat) {
-            $related_cat_names[] = esc_html($cat->name);
-        }
-    }
-    ?>
-    <div class="photo-info">
-        <div class="photo-info-left">
-            <p><?php echo esc_html($related_reference); ?></p>
-        </div>
-        <div class="photo-info-right">
-            <p><?php echo implode(', ', $related_cat_names); ?></p>
-        </div>
-    </div>
-</div>
+                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Icon_eye.png" alt="Voir" class="icon-eye" />
+                                        <?php
+                                        $related_reference  = get_field('references');
+                                        $related_categories = get_the_category();
+                                        $related_cat_names  = array();
+                                        if ($related_categories) {
+                                            foreach ($related_categories as $cat) {
+                                                $related_cat_names[] = esc_html($cat->name);
+                                            }
+                                        }
+                                        ?>
+                                        <div class="photo-info">
+                                            <div class="photo-info-left">
+                                                <p><?php echo esc_html($related_reference); ?></p>
+                                            </div>
+                                            <div class="photo-info-right">
+                                                <p><?php echo implode(', ', $related_cat_names); ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                             </div>
                         </div>
@@ -194,30 +214,10 @@ get_header();
     <?php endwhile; ?>
 </div>
 
-<script>
-
-
-
-
-// Prévisualisation de la photo au survol de la miniature
-jQuery(document).ready(function($) {
-    var previewTimeout;
-    
-    $('.photo-nav-arrows button').hover(
-        function() {
-            var $thumbnail = $('.photo-nav-thumbnail');
-            var direction = $(this).hasClass('nav-prev') ? 'prev' : 'next';
-            
-            previewTimeout = setTimeout(function() {
-                $thumbnail.addClass('show-preview');
-            }, 500);
-        },
-        function() {
-            clearTimeout(previewTimeout);
-            $('.photo-nav-thumbnail').removeClass('show-preview');
-        }
-    );
-});
-</script>
+<?php
+// (consigne 16) : script inline supprimé.
+// La logique de prévisualisation et de navigation est désormais
+// dans assets/js/photo-navigation.js, enregistré via wp_enqueue_script().
+?>
 
 <?php get_footer(); ?>
