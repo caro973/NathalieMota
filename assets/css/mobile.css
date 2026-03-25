@@ -1,7 +1,4 @@
 @media (max-width: 768px) {
-    .menu-navigation {
-        padding: 15px 23px;
-    }
 
     .menu-navigation img {
         width: 138px;
@@ -115,19 +112,14 @@
         width:100%;
     }
 
-    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    
     .single-photo-navigation .thumbnail-arrows {
         display: none;
     }
 
-    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+   
     .single-photo-image img {
         margin: auto;
-    }
-
-    /* CORRIGÉ (consigne 14) : ID CF7 remplacé par .wpcf7-form */
-    .wpcf7-form {
-        margin-left: 20px
     }
 
     .single-photo-page {
@@ -143,14 +135,12 @@
         flex-direction: column;
         gap: 0;
         margin: 0;
-        /*  : padding latéral aligné sur .related-photos (padding: 0 23px) */
         padding: 0 23px;
     }
 
     .single-photo-image {
         width: 100%;
         order: 1;
-        /*  : padding supprimé, géré par .single-photo-container */
         padding: 0;
         margin-bottom: 20px;
     }
@@ -220,7 +210,7 @@
         flex-direction: column;
         align-items: center;
         gap: 15px;
-        padding: 0 50px; /*  : padding latéral aligné sur .related-photos */
+        padding: 0 50px; 
         border-top: solid;
         border-bottom: solid;
         border-width: thin;
@@ -267,7 +257,7 @@
         padding: 0 23px;
     }
 
-    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
+    
     .related-photos {
         margin: 0 !important;
         margin-bottom: 10px !important;
@@ -295,4 +285,5 @@
     .related-photos-grid .custom-post-thumbnail {
         width: 100%;
     }
+    
 }

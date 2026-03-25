@@ -83,18 +83,18 @@ jQuery(document).ready(function ($) {
        ============================================================== */
     function appliquerFiltres(loadMore = false) {
 
-        // 1️⃣  Empêcher le lancement d’une nouvelle requête tant que la précédente n’est pas terminée
+        // Empêcher le lancement d’une nouvelle requête tant que la précédente n’est pas terminée
         if (isLoading) {
             return;
         }
 
-        // 2️⃣  Vérifier que l’objet filtresAjax a bien été injecté (au cas où wp_localize_script aurait échoué)
+        // Vérifier que l’objet filtresAjax a bien été injecté (au cas où wp_localize_script aurait échoué)
         if (typeof filtresAjax === 'undefined') {
             console.error('filtresAjax non défini !');
             return;
         }
 
-        // 3️⃣  Si on ne charge pas « plus », on repart à la première page
+        // Si on ne charge pas « plus », on repart à la première page
         if (!loadMore) currentPage = 1;
 
         /* -------------------------------------------------

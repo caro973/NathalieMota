@@ -11,12 +11,11 @@ get_header(); ?>
     <section class="photo-gallery-page">
 
         <?php
-        // Le shortcode est transformé en HTML grâce à do_shortcode()
         echo do_shortcode( '[filtres_dynamiques]' );
         ?>
 
     </section>
 
-</main><!-- #primary -->
+</main>
 
 <?php get_footer(); ?>

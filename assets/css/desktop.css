@@ -23,11 +23,6 @@
         justify-content: center;
     }
 
-    .menu-navigation{
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
     .single-photo-info {
         margin: auto;
         margin-bottom: 0;
@@ -40,7 +35,6 @@
         max-width: 844px;
     }
 
-    /* CORRIGÉ (consigne 12) : sélecteur simplifié */
     .single-photo-image img {
         width: 100%;
         display: block;
@@ -117,7 +111,8 @@
         cursor: pointer;
         border-radius: 2px;
         transition: all 0.3s ease;
-        margin-left: 51px;
+        margin-left: 71px;
+;
         color: #000;
     }
 
@@ -180,19 +175,20 @@
     }
 
     .related-photos h2 {
+        display: flex;
         font-size: 18px;
         font-family: 'Space Mono', monospace;
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         margin-bottom: 45px;
+        margin-top: 80px;
         text-align: center;
         color: #000;
     }
 
     .related-photos-grid {
         display: flex;
-        flex-wrap: wrap;
         gap: 20px;
     }
 

@@ -74,6 +74,8 @@ h1, h2, h3 {
     justify-content: space-between;
     align-items: center;
     padding: 20px 146px;
+    padding-left: 57px;
+    padding-right: 57px;
     background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: relative;
@@ -162,13 +164,6 @@ body > img.header {
    FORMULAIRE CONTACT (MODALE)
 ======================================== */
 
-/* (consigne 14) : ID CF7 codé en dur remplacé par .wpcf7-form
-   stable même après migration ou export/import du formulaire */
-.wpcf7-form {
-    display: flex;
-    justify-content: center;
-}
-
 .modal {
     display: none;
     position: fixed;
@@ -189,7 +184,7 @@ body > img.header {
     width: 600px;
     max-width: 90%;
         height: 100%;
-    overflow: hidden; /* Cache les parties du logo qui dépassent */
+    overflow: hidden; 
 }
 
 .logo-container {
@@ -207,7 +202,7 @@ body > img.header {
 .wpcf7-form {
     display: flex;
     flex-direction: column;
-    margin-left: 57px;
+    align-items: center;
 }
 
 .wpcf7-form label {
@@ -265,20 +260,22 @@ textarea {
 }
 
 #contact-modal > div > img{
-    max-width: 718px; /* Ajuste selon la taille souhaitée */
+    max-width: 718px;
     height: auto;
     position: relative;
-    left: -50px; /* Décale le logo vers la gauche pour qu'il dépasse */
+    left: -50px; 
     margin-left: -30px;
-        margin-bottom: 48px;
+        /* margin-bottom: 48px; */
 }
-
+.wpcf7-spinner{
+    position: absolute;
+}
 /* ========================================
    NAV SINGLE PHOTO
 ======================================== */
 
 .contact-button{
-    width: 272px;
+    width: 308px;
     height: 50px;
 }
 
@@ -404,8 +401,6 @@ textarea {
 /* ========================================
    GRILLE DE PHOTOS UNIFIÉE
 ======================================== */
-/* (consigne 13) : suppression des tailles fixes !important
-   remplacées par des valeurs fluides pour ne pas bloquer le responsive */
 .thumbnail-wrapper a {
     display: block;
     width: 100%;
@@ -429,7 +424,6 @@ textarea {
     margin-bottom: 40px;
 }
 
-/*  : margin-left supprimé, géré par padding de .single-photo-page */
 .related-photos {
     margin-bottom: 2%;
 }
@@ -447,7 +441,7 @@ textarea {
     display: block;
 }
 
-/* Overlay au survol */
+
 .thumbnail-overlay {
     position: absolute;
     top: 0;
@@ -599,13 +593,7 @@ img.icon-eye{
     column-gap: 7%;
 }
 
-/* (consigne 12) : sélecteur simplifié */
-.single-photo-image img {
-    /* height: 100%; */
-}
-
 .single-photo-info {
-    /*  : margin-left: 10% supprimé, alignement géré par .single-photo-page */
     margin-left: 0;
 }
 
@@ -617,8 +605,6 @@ img.icon-eye{
     max-width: 1440px;
     margin: 0 auto;
     padding: 0;
-    /*  : padding latéral uniforme sur toute la page
-       pour aligner container, navigation ET related-photos */
     padding-left: 54px;
     padding-right: 54px;
 }
@@ -626,9 +612,6 @@ img.icon-eye{
 /* ========================================
    DESKTOP & TABLETTE (> 768px)
 ======================================== */
-
-/* (consigne 13) : suppression des tailles fixes !important
-   on garde aspect-ratio et on laisse la largeur s'adapter au conteneur */
 .custom-post-thumbnail {
     position: relative;
     overflow: hidden;
@@ -729,7 +712,7 @@ img.icon-eye{
     right: 20px;
 }
 
-/* Bouton de fermeture (en haut à droite) */
+
 .lightbox-close {
     position: fixed;
     top: 20px;
@@ -742,7 +725,6 @@ img.icon-eye{
     z-index: 10000;
 }
 
-/* Désactiver le scroll de la page quand la lightbox est ouverte */
 body.lightbox-open {
     overflow: hidden;
 }

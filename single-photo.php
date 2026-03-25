@@ -101,7 +101,7 @@ get_header();
             <div class="thumbnail-arrows">
 
                 <?php
-                // (consigne 8) : navigation filtrée uniquement sur le CPT 'photo'
+                // navigation filtrée uniquement sur le CPT 'photo'
                 // get_next_post() / get_previous_post() naviguaient sur tous les post types.
                 // On récupère uniquement les IDs des photos publiées, triées par date DESC.
                 $all_photos = get_posts( array(
@@ -122,7 +122,7 @@ get_header();
 
                 <div class="photo-nav-thumbnail">
                     <?php
-                    // CORRIGÉ : miniature de la photo suivante filtrée par CPT
+                    // miniature de la photo suivante filtrée par CPT
                     if ( $next_post_id ) {
                         echo get_the_post_thumbnail( $next_post_id, 'thumbnail' );
                     }
@@ -131,7 +131,7 @@ get_header();
 
                 <div class="photo-nav-arrows">
                     <?php
-                    // (consigne 17) : onclick inline remplacé par data-url
+                    // onclick inline remplacé par data-url
                     // L'URL est lue par photo-navigation.js via $(this).data('url')
                     ?>
                     <button class="nav-arrow nav-prev"
@@ -215,7 +215,6 @@ get_header();
 </div>
 
 <?php
-// (consigne 16) : script inline supprimé.
 // La logique de prévisualisation et de navigation est désormais
 // dans assets/js/photo-navigation.js, enregistré via wp_enqueue_script().
 ?>

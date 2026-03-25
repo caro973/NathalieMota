@@ -3,20 +3,27 @@
 /* ================================================================
     THEME SUPPORTS
    ================================================================ */
+/*configuration de les fonctionnalités de base du thème WordPress*/
+
 function motaphoto_theme_setup() {
-    // (consigne 7) : laisse WordPress gérer la balise <title> automatiquement
+
+    // WordPress gère automatiquement la balise <title>
     add_theme_support( 'title-tag' );
-    // (consigne 7) : active les images mises en avant (thumbnails)
+
+    // Active les images mises en avant sur tous les contenus
     add_theme_support( 'post-thumbnails' );
-    // (consigne 7) : active le support HTML5 pour les formulaires, galeries, etc.
+
+    // Génère du HTML5 propre pour les éléments natifs WP
     add_theme_support( 'html5', array(
-        'search-form',
-        'comment-form',
-        'comment-list',
-        'gallery',
-        'caption',
+        'search-form',   // Formulaire de recherche
+        'comment-form',  // Formulaire de commentaire
+        'comment-list',  // Liste des commentaires
+        'gallery',       // Galerie native WordPress
+        'caption',       // Légendes des images
     ) );
 }
+
+// Exécute la fonction au chargement du thème
 add_action( 'after_setup_theme', 'motaphoto_theme_setup' );
 
 
@@ -25,7 +32,7 @@ add_action( 'after_setup_theme', 'motaphoto_theme_setup' );
    ================================================================ */
 function motaphoto_register_menus() {
     register_nav_menus( array(
-        // Emplacement du menu principal (généralement dans le header)
+        // Emplacement du menu principal 
         'menu-principal' => __( 'Menu Principal', 'motaphoto' ),
         // Emplacement du menu du footer
         'footer_menu'    => __( 'Footer Menu',    'motaphoto' ),
@@ -48,9 +55,9 @@ function motaphoto_enqueue_assets() {
     wp_enqueue_style(
         'nathalie-mota-main-style',
         get_stylesheet_directory_uri() . '/assets/css/style.css',
-        array(), // (consigne 4) : dépendances en 3ème position
-        '1.0',   // (consigne 4) : version en 4ème position
-        'all'    // (consigne 4) : media en 5ème position
+        array(), 
+        '1.0',   
+        'all'    
     );
     // CSS spécifique pour les écrans mobiles (optionnel)
     wp_enqueue_style(
@@ -94,7 +101,7 @@ function motaphoto_enqueue_assets() {
         '1.0.0',
         true
     );
-    /* ✅ AJOUTÉ (consigne 16) : navigation entre photos, extrait de single-photo.php */
+    /*  AJOUTÉ  : navigation entre photos, extrait de single-photo.php */
     wp_enqueue_script(
         'motaphoto-photo-navigation',
         get_template_directory_uri() . '/assets/js/photo-navigation.js',
@@ -103,7 +110,6 @@ function motaphoto_enqueue_assets() {
         true
     );
     /* ---------- VARIABLES AJAX ---------- */
-    // (consigne 6) : WP_Query supprimé d'ici et déplacé dans le shortcode
     wp_localize_script(
         'motaphoto-filters',
         'filtresAjax',
@@ -121,7 +127,7 @@ add_action( 'wp_enqueue_scripts', 'motaphoto_enqueue_assets' );
    ================================================================ */
 /**
  * Ajoute l'attribut `type="module"` au script principal.
- * (consigne 5) : add_filter() déclaré au niveau global,
+ * add_filter() déclaré au niveau global,
  * pas à l'intérieur du callback de wp_enqueue_scripts.
  */
 function motaphoto_add_module_attribute( $tag, $handle ) {
@@ -131,7 +137,7 @@ function motaphoto_add_module_attribute( $tag, $handle ) {
     $src = esc_url( get_template_directory_uri() . '/assets/js/main.js' );
     return '<script type="module" src="' . $src . '"></script>';
 }
-add_filter( 'script_loader_tag', 'motaphoto_add_module_attribute', 10, 2 ); // ✅ niveau global
+add_filter( 'script_loader_tag', 'motaphoto_add_module_attribute', 10, 2 ); //  niveau global
 
 
 /* ================================================================
@@ -177,7 +183,6 @@ add_action( 'init', 'create_photo_post_type' );
    SHORTCODE « filtres_dynamiques »
    ================================================================ */
 function generer_filtres_dynamiques() {
-    // (consigne 6) : WP_Query déplacé ici depuis wp_enqueue_scripts
     $initial_query = new WP_Query( array(
         'post_type'      => 'photo',
         'posts_per_page' => 8,
@@ -186,7 +191,6 @@ function generer_filtres_dynamiques() {
     $initial_max_pages = $initial_query->max_num_pages;
     wp_reset_postdata();
 
-    // On transmet max_pages au JS via wp_localize_script depuis le shortcode
     wp_localize_script(
         'motaphoto-filters',
         'filtresAjaxExtra',
