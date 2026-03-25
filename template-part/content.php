@@ -1,12 +1,9 @@
 <?php
 /**
  * Template part – Affichage d’une vignette du CPT « photo ».
- * Placez ce fichier dans : wp-content/themes/votre-theme/template-part/content-photo.php
+ * Fichier dans : wp-content/themes/votre-theme/template-part/content-photo.php
  */
 
-/* -------------------------------------------------
-   1️⃣  Vérifie qu’une image mise en avant existe
-   ------------------------------------------------- */
 if ( ! has_post_thumbnail() ) {
     // Pas d’image → on ne renvoie rien.
     return;

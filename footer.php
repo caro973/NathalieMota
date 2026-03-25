@@ -1,13 +1,4 @@
 <?php
-/**
- * Footer du thème
- *
- * Ce fichier affiche le pied de page, le menu du footer et le
- * template part contenant la modale de contact.
- *
- * Aucun script n’est injecté ici ; ils sont ajoutés via
- * wp_enqueue_script() (voir functions.php).
- */
 ?>
 <footer class="site-footer">
 
@@ -39,10 +30,6 @@
 /* -------------------------------------------------
    FOOTER WORDPRESS
    -------------------------------------------------
-   wp_footer() déclenche les actions nécessaires,
-   notamment l’impression des scripts que vous avez
-   enregistrés (filters.js, script.js, etc.).
-   Ne retirez pas cet appel !
 */
 wp_footer();
 ?>

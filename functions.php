@@ -125,11 +125,7 @@ add_action( 'wp_enqueue_scripts', 'motaphoto_enqueue_assets' );
 /* ================================================================
    ATTRIBUT type="module" SUR LE SCRIPT PRINCIPAL
    ================================================================ */
-/**
- * Ajoute l'attribut `type="module"` au script principal.
- * add_filter() déclaré au niveau global,
- * pas à l'intérieur du callback de wp_enqueue_scripts.
- */
+
 function motaphoto_add_module_attribute( $tag, $handle ) {
     if ( 'motaphoto-main' !== $handle ) {
         return $tag;

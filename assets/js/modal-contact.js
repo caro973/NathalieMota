@@ -39,8 +39,7 @@ window.addEventListener('click', function (event) {
     });
 });
 
-/* (consigne 18) : fermeture via .close-modal gérée ici
-   au lieu du onclick="jQuery('#contact-modal').fadeOut();" inline */
+
 document.addEventListener('DOMContentLoaded', function () {
     const closeBtn = document.querySelector('.close-modal');
     if (closeBtn) {

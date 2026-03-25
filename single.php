@@ -1,12 +1,4 @@
 <?php
-/**
- * single.php — Template pour les articles de blog (thème classique)
- *
- * CORRIGÉ (consigne 11) : l'ancien fichier ne contenait que des blocs
- * Gutenberg (wp:template-part, wp:post-content, etc.) incompatibles avec
- * un thème classique (pas de theme.json, pas de dossier templates/).
- * Remplacé par une boucle WordPress standard.
- */
 
 get_header(); ?>
 

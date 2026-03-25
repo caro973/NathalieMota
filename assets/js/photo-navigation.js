@@ -1,8 +1,5 @@
 /* ------------------------------------------------------------------
    photo-navigation.js — Navigation entre photos sur la page single-photo
-   (consigne 16) : script extrait du template single-photo.php
-   (consigne 17) : les URLs de navigation sont lues depuis
-      des attributs data-url plutôt que depuis des onclick inline
    ------------------------------------------------------------------ */
 
 jQuery(document).ready(function ($) {

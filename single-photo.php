@@ -1,8 +1,4 @@
 <?php
-/**
- * Single Photo Template
- * Ce fichier doit être nommé : single-photo.php
- */
 
 get_header(); 
 ?>
@@ -215,8 +211,6 @@ get_header();
 </div>
 
 <?php
-// La logique de prévisualisation et de navigation est désormais
-// dans assets/js/photo-navigation.js, enregistré via wp_enqueue_script().
 ?>
 
 <?php get_footer(); ?>

@@ -33,7 +33,7 @@
     </nav>
 
             <?php 
-    // Afficher l'image header seulement sur la page d'accueil
+    // Affiche l'image header seulement sur la page d'accueil
     if (is_front_page()) : 
     ?>
         <img class="header" src="<?php echo get_template_directory_uri(); ?>/assets/images/Header.png" alt="image Header" />
