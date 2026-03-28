@@ -282,7 +282,7 @@ textarea {
 }
 
 /* ========================================
-   FILTRES RESPONSIVE
+   FILTRES
 ======================================== */
 
 .filtres-container {
@@ -304,8 +304,7 @@ textarea {
 }
 
 .filtre-container-trie{
-        flex: 0 0 auto;
-
+    flex: 0 0 auto;
 }
 
 /* === FILTRE DROPDOWN === */
@@ -406,8 +405,9 @@ textarea {
 }
 
 #posts-container{
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
 }
 
 .custom-post-thumbnails {
@@ -608,14 +608,13 @@ img.icon-eye{
 }
 
 /* ========================================
-   DESKTOP & TABLETTE (> 768px)
+   CUSTOM POST IMAGE
 ======================================== */
 .custom-post-thumbnail {
     position: relative;
     overflow: hidden;
     aspect-ratio: 645 / 495;
     width: 100%;
-    max-width: 645px;
 }
 
 /* ========================================

@@ -91,7 +91,6 @@
         flex-direction: column;
         gap: 15px;
         margin: 11px auto;
-        padding-right: 23px;
         width: 70%;
     }
 
@@ -221,6 +220,10 @@
         border-width: thin;
         padding-top: 1%;
         padding-bottom: 2%;
+    }
+
+    .custom-post-thumbnail {
+        max-width: 715px;
     }
 
     .contact-text {

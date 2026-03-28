@@ -1,8 +1,9 @@
 @media (min-width: 769px) {
     .filtres-container {
         flex-direction: row;
-        max-width: 1310px;
-        margin: 30px auto;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 80%;
     }
 
     .filtre-dropdown {
@@ -91,6 +92,11 @@
         display: flex;
         justify-content: space-between;
     }
+
+    .custom-post-thumbnail {
+        max-width: 49%;
+    }
+
 
     .contact-text {
         font-family: 'Poppins', sans-serif;
