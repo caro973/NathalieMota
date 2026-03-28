@@ -74,8 +74,6 @@ h1, h2, h3 {
     justify-content: space-between;
     align-items: center;
     padding: 20px 146px;
-    padding-left: 57px;
-    padding-right: 57px;
     background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: relative;

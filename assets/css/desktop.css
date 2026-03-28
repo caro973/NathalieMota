@@ -149,6 +149,11 @@
         align-items: center;
     }
 
+    .menu-navigation {
+        padding-left: 14%;
+        padding-right: 14%;
+    }
+
     .nav-arrow {
         width: auto;
         height: auto;

@@ -80,6 +80,11 @@
         font-size: 16px;
     }
 
+    .menu-navigation {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
     /* Conteneur principal des filtres */
     .filtres-container {
         display: flex;
